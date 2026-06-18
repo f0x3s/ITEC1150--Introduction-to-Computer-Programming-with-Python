@@ -12,7 +12,7 @@
 user_name = input("Please enter your name: ")
 
 # create a fortune message
-fortune = "A journey of a thousand miles begins with a single step."
+fortune = "Don't hold onto things that require a light grip."
 
 # display fortune message
 print("Your fortune cookie says: ")
