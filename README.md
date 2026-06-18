@@ -2,7 +2,6 @@
 
 
 ## Files
-All files to be cut from 0.25" acrylic unless otherwise specified.
 > 📂 **[automate-the-boring-stuff-examples](automate-the-boring-stuff-examples)/** — *in-textbook work: AtBS*
 > 📂 **[in-class-assignments](in-class-assignments)/** — *in-textbook work: AtBS*
 > 📂 **[labs](labs)/**  — *weekly lab assignments*
