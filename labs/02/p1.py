@@ -5,7 +5,7 @@
 # python version 3.14.6
 # created 6/18/26 - foxes
 # modified 6/18/26 - foxes
-
+#
 # description: introductory python guide.
 
 age = 25            # integer
