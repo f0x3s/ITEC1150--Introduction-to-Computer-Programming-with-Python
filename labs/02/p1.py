@@ -28,4 +28,11 @@ print("Division: ", a / b)
 
 # string concatenation
 first_name = "Abdi"
-last_name = ""
+last_name = "Hassan"
+full_name = first_name + " " + last_name
+print("Full Name: " + full_name)    # expected output: Abdi Hassan"
+
+# user input & output
+username = input("Enter your name: ")
+print("Hello, " + username + "!")
+
