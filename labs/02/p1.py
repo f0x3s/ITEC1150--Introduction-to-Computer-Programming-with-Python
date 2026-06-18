@@ -6,6 +6,8 @@
 # created 6/18/26 - foxes
 # modified 6/18/26 - foxes
 
+# description: introductory python guide.
+
 age = 25            # integer
 pi = 3.14159        # float
 name = "Abdi"       # string
