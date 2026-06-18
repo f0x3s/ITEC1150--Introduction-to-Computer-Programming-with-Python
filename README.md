@@ -1,5 +1,5 @@
 # ITEC 1150 Introduction to Programming with Python
-Personal repo for intro to Programming with instructor Corin Dennison.
+Personal repo for Intro to Programming with instructor Corin Dennison.
 ## Files
 Home for all coursework projects.
 > 📂 **[automate-the-boring-stuff-examples](automate-the-boring-stuff-examples)/** — *in-textbook work & examples: AtBS*<br>
