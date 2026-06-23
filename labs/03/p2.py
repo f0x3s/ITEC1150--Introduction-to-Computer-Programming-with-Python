@@ -13,6 +13,7 @@ PLATTER_PRICE = 12
 
 customer_name = input("Please enter your name: ")
 
+# determine type of Meal
 meal_choice = input("Do you want a sandwitch meal or a platter meal? (sandwitch/platter): ")
 
 if meal_choice.lower() == "sandwitch":
@@ -24,6 +25,8 @@ else:
     meal_choice = "sandwitch"
     meal_price = SANDWITCH_PRICE
 
+
+# Determine number of meals with error handling and resulant total cost
 num_meals = input("How many meals do you want?: ")
 try:
     num_meals = int(num_meals)
@@ -32,6 +35,7 @@ except:
     print("error: Expecting numeric input for number of Meals")
     quit()
 
+# Modify total cost based on sauce selection
 extra_sauce = input("Do you want extra sauce? (Yes/no): ")
 if extra_sauce.lower() == "yes":
     total_cost += 0.50 * num_meals
@@ -39,6 +43,7 @@ if extra_sauce.lower() == "yes":
 original_total = meal_price * num_meals
 sauce_added = extra_sauce.lower() == "yes"
 
+# Display user selections and calculations
 print("\nOrder Summary: ")
 print("Customer Name: " + customer_name)
 print("Meal type: " + meal_choice + " meal")
