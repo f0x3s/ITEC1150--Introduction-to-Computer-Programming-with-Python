@@ -4,7 +4,7 @@ lowest = None
 highest = None
 
 while True:
-    print('Input number')
+    print('Input number or "done"')
     number = input()
 
     if (number == 'done'):
@@ -15,16 +15,10 @@ while True:
         total = total + number
         count = count + 1
 
-        if lowest is None:
+        if lowest is None or number < lowest:
             lowest = number
 
-        if highest is None:
-            highest = number
-        
-        if number < lowest:
-            lowest = number
-        
-        if number > highest:
+        if highest is None or number > highest:
             highest = number
 
     except:
