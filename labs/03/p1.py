@@ -33,7 +33,6 @@ else:
     print("No cheese on this taco.")
 
 # Optional extension activity using control flow
-
 if tortilla:
     ingredient_count = ingredient_count + 1
 if meat is not (None or ""):
