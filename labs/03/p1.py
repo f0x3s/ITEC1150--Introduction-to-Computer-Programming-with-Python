@@ -1,3 +1,13 @@
+# module 3 lab part 1
+# foxes
+# Instructor: Corin Dennison
+#
+# python version 3.14.6
+# created 6/23/26 - foxes
+# modified 6/23/26 - foxes
+#
+# description: virtual taco stand.
+
 tortilla =  True
 meat = "beef"
 cheese = False
