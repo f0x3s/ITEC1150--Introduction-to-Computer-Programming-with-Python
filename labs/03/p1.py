@@ -54,6 +54,6 @@ ingredient_count = tortilla + bool(meat) + cheese + bool(salsa) + guacamole
 
 print("Recalculated with casting: ")
 if ingredient_count > 2:
-    print(str(ingredient_count) + " ingredients; fully loaded taco.")
+    print(f"{ingredient_count} ingredients; fully loaded taco.")
 else:
-    print(str(ingredient_count) + " ingredients;  light taco coming up!")
+    print(f"{ingredient_count} ingredients;  light taco coming up!")
