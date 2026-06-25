@@ -1,3 +1,13 @@
+# module 4 lab part 2
+# foxes
+# Instructor: Corin Dennison
+#
+# python version 3.14.6
+# created 6/25/26 - foxes
+# modified 6/25/26 - foxes
+#
+# description: Magical Number Guessing Game
+
 import random
 
 print("Welcome to the Magical Number Guessing Game!")
