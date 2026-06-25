@@ -78,7 +78,7 @@ while True:
         else : 
             print("Invalid input. Please type Yes/Y or No/N.\n")
 
-    # quit flag used to brea from game loop 
+    # quit flag used to break from game loop 
     if quit_flag :
         print("Quitting...\n")
         break
