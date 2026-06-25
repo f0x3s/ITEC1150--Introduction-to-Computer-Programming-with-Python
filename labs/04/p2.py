@@ -25,8 +25,8 @@ while True:
                 # Reminder if guess is not a whole number
                 print("Error: Please guess a whole number: ")
             else:
-                # Reminder if guess is a whole number but out of bounds
                 if player_guess < 1 or player_guess > 100 :
+                    # Reminder if guess is a whole number but out of bounds
                     print("Remember, the secret number is between 1 and 100. Try again: ")
                 else :
                     guess_remaining -= 1
