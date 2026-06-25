@@ -16,17 +16,21 @@ while True:
     for guess_count in range(1, 6): 
         print(f"\nPlease guess a whole number between 1 and 100\n{guess_remaining} guesses left: ")
         
-        # Ensure user guess is a whole number without using up a guess if user needs to correct it
-        guess_error_flag = True
-
-        while guess_error_flag :
+        # Ensure user guess is a whole number between 0 and 100 without using up a guess if user needs to correct it
+        while True :
             player_guess = input()
             try:
                 player_guess = int(player_guess)
-                guess_error_flag = False
-                guess_remaining -= 1
             except:
+                # Reminder if guess is not a whole number
                 print("Error: Please guess a whole number: ")
+            else:
+                # Reminder if guess is a whole number but out of bounds
+                if player_guess < 1 or player_guess > 100 :
+                    print("Remember, the secret number is between 1 and 100. Try again: ")
+                else :
+                    guess_remaining -= 1
+                    break
 
         # Respond to player guess 
         if player_guess < secret_number :
@@ -36,10 +40,6 @@ while True:
         else :
             win_flag = True # Setting a flag to later display custom continue message before exiting
             break
-        
-        # Soft reminder if guess out of bounds
-        if player_guess < 1 or player_guess > 100 :
-            print("Remember, the secret number is between 1 and 100")
 
         # Additional encouragement if guess is within 10 
         if abs(player_guess - secret_number) < 10 :
