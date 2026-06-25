@@ -38,7 +38,7 @@ while True:
         elif player_guess > secret_number :
             print("Nope! Your gusss was too high.")
         else :
-            win_flag = True # Setting a flag to later display custom continue message before exiting
+            win_flag = True # Setting a flag to later display custom win/lose continue message before exiting
             break
 
         # Additional encouragement if guess is within 10 
