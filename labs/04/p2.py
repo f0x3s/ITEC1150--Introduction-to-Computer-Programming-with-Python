@@ -22,7 +22,7 @@ while True:
     secret_number = random.randint(1, 100)
     guess_remaining = 5
 
-    for guess_count in range(1, (guess_remaining + 1)) :
+    for guess_count in range(0, guess_remaining) :
         print(f"\nPlease guess a whole number between 1 and 100\n{guess_remaining} guesses left: ")
         
         # Ensure user guess is a whole number between 0 and 100 without using up a guess if OOB or not an int.
