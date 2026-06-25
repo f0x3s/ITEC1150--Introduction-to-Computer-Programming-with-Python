@@ -1,0 +1,75 @@
+import random
+
+print("Welcome to the Magical Number Guessing Game!")
+print("I'm thinking of a number between 1 and 100.")
+print("But beware, the number could change if you take too long!")
+
+win_count = 0
+loss_count = 0
+
+
+while True:
+    win_flag = False
+    secret_number = random.randint(1, 100)
+    guess_remaining = 5
+
+    for guess_count in range(1, 6): 
+        print(f"\nPlease guess a whole number between 1 and 100\n{guess_remaining} guesses left: ")
+        
+        # Ensure user guess is a whole number without using up a guess if user needs to correct it
+        guess_error_flag = True
+
+        while guess_error_flag :
+            player_guess = input()
+            try:
+                player_guess = int(player_guess)
+                guess_error_flag = False
+                guess_remaining -= 1
+            except:
+                print("Error: Please guess a whole number: ")
+
+        # Respond to player guess 
+        if player_guess < secret_number :
+            print("Nope! Your gusss was too low.")
+        elif player_guess > secret_number :
+            print("Nope! Your gusss was too high.")
+        else :
+            win_flag = True # Setting a flag to later display custom continue message before exiting
+            break
+        
+        # Soft reminder if guess out of bounds
+        if player_guess < 1 or player_guess > 100 :
+            print("Remember, the secret number is between 1 and 100")
+
+        # Additional encouragement if guess is within 10 
+        if abs(player_guess - secret_number) < 10 :
+            print("But you were very close...")
+    
+    if win_flag :
+        print(f"\nCongratulations! {secret_number} was correct!\nKeep the streak going...")
+        win_count += 1
+    else :
+        print(f"\nNot Quite... The secret number was {secret_number}.\nBut don't quit on a loss... ")
+        loss_count += 1
+    
+    quit_flag = False 
+
+    while True:
+        print("Continue? (Yes/No): ")
+        user_is_continue = input().lower()
+
+        if user_is_continue in ["yes", "y"] :
+            print("\nPicking a new number...")
+            break
+        elif user_is_continue in ["no", "n"] :
+            quit_flag = True
+            break
+        else : 
+            print("Invalid input. Please type Yes/Y or No/N.\n")
+
+    if quit_flag :
+        print("Quitting...\n")
+        break
+
+print("Thanks for playing!")
+print(f"You had {win_count} wins and {loss_count} losses, for a total of {win_count+loss_count} games.")
