@@ -39,7 +39,7 @@ while fuel > 0 and planets_visited < 5:
     if fuel_discovery_roll < DISCOVERY_CHANCE :
         # Refueling station discovered
         fuel += 15
-        print(f"Fuel Station discovered on planet, toal fuel: {fuel}\n")
+        print(f"Fuel Station discovered on planet, new total fuel: {fuel}\n")
 
     
 
