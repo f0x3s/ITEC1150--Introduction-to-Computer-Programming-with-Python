@@ -1,4 +1,4 @@
-# module 5 lab part 1
+# module 5 lab part 2
 # foxes
 # Instructor: Corin Dennison
 #
