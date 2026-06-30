@@ -10,7 +10,11 @@
 
 import random
 
-goldfish = ["Bubbles", "Finley", "Goldie", "Splash", "Nemo"]
+goldfish = ["Bubbles", 
+            "Finley", 
+            "Goldie", 
+            "Splash", 
+            "Nemo"]
 
 print("Welcome to the Goldfish Playdate Planner!")
 print("Our goldfish friends are: " + ", ".join(goldfish))
