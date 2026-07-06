@@ -4,7 +4,7 @@
 #
 # python version 3.14.6
 # created 7/2/26 - foxes
-# modified 7/2/26 - foxes
+# modified 7/6/26 - foxes
 #
 # description: Animal Shelter Management System
 
@@ -14,7 +14,6 @@ CAPACITY = 9
 def add_animal(name, species, input_animals) :
     print(f"Adding: {name}, {species}...")
 
-    
     # basic cinput check to make sure user has entered both name and species.
     if (species is None or species == "") or (name is None or name == "") : 
         print("\033[91mERROR: Could not add animal. Check name and species.\033[0m") # using ansi color escape codes for compatibility
@@ -51,7 +50,6 @@ def available_species(available) :
 def adopt_animal(species, input_animals) :
 
     pending_adoption = []
-    
 
     for individual in animals :
         if species == individual[1] :
@@ -65,26 +63,7 @@ def adopt_animal(species, input_animals) :
         
         print("\nWhich one would you like? Enter their name: ")
 
-        is_exists = False
-
-        while not is_exists :
-
-            requested_name = input().replace(" ", "").lower()
-
-            for individual in pending_adoption :
-                if requested_name == individual[0] :
-                    is_exists = True
-
-                if is_exists : 
-                    print(f"you have adopted: {individual[0].capitalize()}")
-                    animals.remove(individual)
-                    break;
-            
-            if not is_exists :
-                print(f"We can't find {requested_name.capitalize()}. Please ensure correct spelling:")
-    else :
-        print(f"You have adopted: {pending_adoption[0][0].capitalize()} the {pending_adoption[0][1]}.")
-        animals.remove(pending_adoption[0])
+        return get_valid_animal(pending_adoption)
 
 # returns number of animals in shelter
 def get_animal_count(input_animals) :
@@ -99,7 +78,7 @@ def plural(animal_type) :
 
     return animal_type 
 
-# recursive function
+# recursive functions
 def get_valid_species(input_animals) :
     print("\nWhich species would you like?")
     want_species = input()
@@ -115,8 +94,20 @@ def get_valid_species(input_animals) :
         return get_valid_species(input_animals)
 
     return want_species
-    
 
+def get_valid_animal(input_pending_adoption) :
+    requested_name = input().replace(" ", "").lower()
+    success = False
+
+    for individual in input_pending_adoption :
+        if requested_name == individual[0] : 
+            print(f"\n\x1b[32mYou have adopted: {individual[0].capitalize()} the {individual[1]}.\x1b[0m")
+            return individual
+            
+    print(f"We can't find {requested_name.capitalize()}. Please ensure correct spelling:")
+    get_valid_animal(input_pending_adoption)
+    
+## main program 
 
 animals = [] # empty list to hold animals and species in shelter
 
@@ -142,6 +133,6 @@ print(*available_species(animals), sep="\n")
 
 want_species = get_valid_species(animals)
 
-adopt_animal(want_species, animals)
+animals.remove(adopt_animal(want_species, animals))
 
 print(f"\n{get_animal_count(animals)} animals remain.")
