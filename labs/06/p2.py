@@ -70,10 +70,12 @@ def get_animal_count(input_animals) :
     return len(input_animals)
 
 # specialty function for correcting irregular plurals
+plurals = [("mouse", "mice"),("octopus", "octopuses"), ("moose", "moose")]
+
 def plural(animal_type) :
-    if animal_type == "mouse" :
-        animal_type = "mice"
-    else :
+    try :
+        animal_type = plurals[plurals[0].index(animal_type)][1]
+    except :
         animal_type = animal_type + "s"
 
     return animal_type 

@@ -17,5 +17,8 @@ Home for all coursework projects.
 > - 📁 [`05`](labs/05)/
 >   - 🐍 [`p1.py`](labs/05/p1.py) — *Part 1: Goldfish Playdate Planner*
 >   - 🐍 [`p2.py`](labs/05/p2.py) — *Part 2: Dad Joke Generator*
+> - 📁 [`06`](labs/06)/
+>   - 🐍 [`p1.py`](labs/06/p1.py) — *Part 1: Fast Food Functions*
+>   - 🐍 [`p2.py`](labs/06/p2.py) — *Part 2: Animal Shelter Management System*
 >
 > 📂 **[py4e](py4e)/** — *in-textbook work & examples: Py4E*
