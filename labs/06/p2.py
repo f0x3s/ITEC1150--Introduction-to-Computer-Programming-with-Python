@@ -11,29 +11,29 @@
 CAPACITY = 9
 
 # adds new animal to input list as tuplet per element (<name>, <species>) and returns copy of list
-def add_animal(name, species, in_list) :
-    print(f"Adding: {name}, {species}")
+def add_animal(name, species, input_list) :
+    print(f"Adding: {name}, {species}...")
 
     # basic cinput check to make sure user has entered both name and species.
     if (species is None or species == "") or (name is None or name == "") : 
-        print("Could not add animal. Check name and species.")
+        print("ERROR: Could not add animal. Check name and species.")
 
     else :
 
         # use get_animal_count() to check current # of animals against CAPACITY
         if get_animal_count() < CAPACITY :
-            in_list.append((name, species))
+            input_list.append((name, species))
             print(f"Added {name} the {species}.")
             print(f"Remaining capacity: {CAPACITY-get_animal_count()}")
         else :
             print(f"The shelter is at capacity, could not add {name} the {species}.")
     
-    return list(in_list) # copy of input list
+    return list(input_list) # copy of input list.
 
 def available_species(available) :
     seen = []
 
-    # parse through all species in available list, add first occurrence to temporary buffer
+    # parse through all species in available list, add first occurrence to buffer
     for individual in available :
         if individual[1] not in seen :
             seen.append(individual[1])
