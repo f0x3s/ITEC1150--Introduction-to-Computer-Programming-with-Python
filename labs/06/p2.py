@@ -9,32 +9,32 @@
 # description: Animal Shelter Management System
 
 animals = []
-CAPACITY = 4
-
+CAPACITY = 9
 
 def add_animal(name, species) :
-    animals.append((name, species))
+    if get_animal_count() < CAPACITY :
+        animals.append((name, species))
+        print(f"Added {name} the {species}.")
+        print(f"Remaining capacity: {CAPACITY-get_animal_count()}")
+    else :
+        print(f"The shelter is at capacity, could not add {name} the {species}.")
 
 def available_species(available) :
     seen = []
 
+    # parse through all species in available list, add first occurrence to temporary buffer
     for individual in available :
         if individual[1] not in seen :
             seen.append(individual[1])
     
     return seen
 
-
-
-    
-
-
 def adopt_animal(species) :
 
     pending_adoption = []
 
     for individual in animals :
-        if species is individual[1] :
+        if species == individual[1] :
             pending_adoption.append(individual)
     
     if len(pending_adoption) > 1 :
@@ -59,19 +59,38 @@ def adopt_animal(species) :
                     print(f"you have adopted: {individual[0]}")
                     animals.remove(individual)
                     break;
+    else :
+        print(f"You have adopted: {pending_adoption[0][0]} the {pending_adoption[0][1]}.")
+        animals.remove(pending_adoption[0])
 
 
 def get_animal_count() :
     return len(animals)
 
-add_animal("alice", "human")
-add_animal("bob", "human")
 add_animal("alice", "cat")
+add_animal("bob", "dog")
+add_animal("angel", "cat")
+add_animal("zoey", "cat")
+add_animal("spot", "dog")
+add_animal("zeke", "bird")
+add_animal("moxxy", "mouse")
+add_animal("nim", "mouse")
+add_animal("steven", "mouse")
+add_animal("poly", "bird")
 
-# unpack list and split with newlines
+print(f"\nWeclome to the animal shelter! We have {get_animal_count()} animals. Current available types are: ")
+
+# return unique species as list, unpack list and split with newlines
 print(*available_species(animals), sep="\n")
 
-# print(animals)
+while True :
+    print("\nWhich species would you like?")
+    want_species = input().lower()
 
-adopt_animal("human")
+    if want_species.lower() not in available_species(animals) :
+        print(f"We don't have any {want_species}s.")
+    else :
+        break
+
+adopt_animal(want_species)
 print(animals)

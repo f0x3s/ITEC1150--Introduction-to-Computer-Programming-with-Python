@@ -36,7 +36,7 @@ def calculate_combo_price(has_burger, has_fries, has_drink):
 
     tax = TAX_RATE * subtotal
     total_cost = subtotal + tax
-    print("Total combo price: $" + str(total_cost))
+    print("Total combo price: $" + str(total_cost,0.2))
     return total_cost
     
 # Example usage
