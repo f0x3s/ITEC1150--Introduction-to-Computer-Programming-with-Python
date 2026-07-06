@@ -99,6 +99,25 @@ def plural(animal_type) :
 
     return animal_type 
 
+# recursive function
+def get_valid_species(input_animals) :
+    print("\nWhich species would you like?")
+    want_species = input()
+
+    if want_species is None or want_species == "" : 
+        print("\033[91mERROR: Please enter species of desired animal: .\033[0m") # using ansi color escape codes for compatibility
+        return get_valid_species(input_animals)
+
+    want_species = want_species.lower().replace(" ", "") # input() always a string, no need to perform error checking like in add_animal() where we don't use input
+        
+    if want_species not in available_species(animals) :
+        print(f"We don't have any {want_species}s.")
+        return get_valid_species(input_animals)
+
+    return want_species
+    
+
+
 animals = [] # empty list to hold animals and species in shelter
 
 # test animals, mix of upper and lower case formatting and additional whitespace to simulate user input.
@@ -121,22 +140,8 @@ print(f"\nWeclome to the animal shelter! We have {get_animal_count(animals)} ani
 # return unique species as list, unpack list and split with newlines
 print(*available_species(animals), sep="\n")
 
-while True :
-    print("\nWhich species would you like?")
-    want_species = input()
-
-    if want_species is None or want_species == "" : 
-        print("\033[91mERROR: Please enter species of desired animal: .\033[0m") # using ansi color escape codes for compatibility
-
-    else :
-        want_species = want_species.lower().replace(" ", "") # input() always a string, no need to perform error checking like in add_animal() where we don't use input
-        
-        if want_species not in available_species(animals) :
-            print(f"We don't have any {want_species}s.")
-        else :
-            break
+want_species = get_valid_species(animals)
 
 adopt_animal(want_species, animals)
 
-print()
-print(animals)
+print(f"\n{get_animal_count(animals)} animals remain.")
