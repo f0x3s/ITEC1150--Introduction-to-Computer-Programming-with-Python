@@ -8,16 +8,27 @@
 #
 # description: Animal Shelter Management System
 
-animals = []
 CAPACITY = 9
 
-def add_animal(name, species) :
-    if get_animal_count() < CAPACITY :
-        animals.append((name, species))
-        print(f"Added {name} the {species}.")
-        print(f"Remaining capacity: {CAPACITY-get_animal_count()}")
+# adds new animal to input list as tuplet per element (<name>, <species>) and returns copy of list
+def add_animal(name, species, in_list) :
+    print(f"Adding: {name}, {species}")
+
+    # basic cinput check to make sure user has entered both name and species.
+    if (species is None or species == "") or (name is None or name == "") : 
+        print("Could not add animal. Check name and species.")
+
     else :
-        print(f"The shelter is at capacity, could not add {name} the {species}.")
+
+        # use get_animal_count() to check current # of animals against CAPACITY
+        if get_animal_count() < CAPACITY :
+            in_list.append((name, species))
+            print(f"Added {name} the {species}.")
+            print(f"Remaining capacity: {CAPACITY-get_animal_count()}")
+        else :
+            print(f"The shelter is at capacity, could not add {name} the {species}.")
+    
+    return list(in_list) # copy of input list
 
 def available_species(available) :
     seen = []
@@ -63,20 +74,24 @@ def adopt_animal(species) :
         print(f"You have adopted: {pending_adoption[0][0]} the {pending_adoption[0][1]}.")
         animals.remove(pending_adoption[0])
 
-
+# returns number of animals in shelter
 def get_animal_count() :
     return len(animals)
 
-add_animal("alice", "cat")
-add_animal("bob", "dog")
-add_animal("angel", "cat")
-add_animal("zoey", "cat")
-add_animal("spot", "dog")
-add_animal("zeke", "bird")
-add_animal("moxxy", "mouse")
-add_animal("nim", "mouse")
-add_animal("steven", "mouse")
-add_animal("poly", "bird")
+
+animals = [] # empty list to hold animals and species in shelter
+
+animals = add_animal("alice", "cat", animals)
+animals = add_animal("red", None, animals)
+animals = add_animal("bob", "dog", animals)
+animals = add_animal("angel", "cat", animals)
+animals = add_animal("zoey", "cat", animals)
+animals = add_animal("spot", "dog", animals)
+animals = add_animal("zeke", "bird", animals)
+animals = add_animal("moxxy", "mouse", animals)
+animals = add_animal("nim", "mouse", animals)
+animals = add_animal("steven", "mouse", animals)
+animals = add_animal("poly", "bird", animals)
 
 print(f"\nWeclome to the animal shelter! We have {get_animal_count()} animals. Current available types are: ")
 
