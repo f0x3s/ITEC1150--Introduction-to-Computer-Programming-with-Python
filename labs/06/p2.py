@@ -56,21 +56,15 @@ def adopt_animal(species, input_animals) :
         if species == individual[1] :
             pending_adoption.append(individual)
 
-    adopted = pending_adoption[0]
-
     if get_animal_count(pending_adoption) > 1 :
-
         print(f"\nWe have multiple {plural(species)}:")
         for individual in pending_adoption :
             print(individual[0].capitalize())
         
         print("\nWhich one would you like? Enter their name: ")
-
-    adopted = get_valid_animal(pending_adoption)
     
-    return adopted
+    return get_valid_animal(pending_adoption)
         
-
 # returns number of animals in shelter
 def get_animal_count(input_animals) :
     return len(input_animals)
@@ -117,7 +111,6 @@ def get_valid_animal(input_pending_adoption) :
             
     print(f"We can't find {requested_name.capitalize()}. Please ensure correct spelling:")
     get_valid_animal(input_pending_adoption)
-
 
 ## main program 
 
