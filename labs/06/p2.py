@@ -50,12 +50,15 @@ def available_species(available) :
 def adopt_animal(species, input_animals) :
 
     pending_adoption = []
-
+    adopted = []
+    
     for individual in animals :
         if species == individual[1] :
             pending_adoption.append(individual)
-    
-    if len(pending_adoption) > 1 :
+
+    adopted = pending_adoption[0]
+
+    if get_animal_count(pending_adoption) > 1 :
 
         print(f"\nWe have multiple {plural(species)}:")
         for individual in pending_adoption :
@@ -63,7 +66,10 @@ def adopt_animal(species, input_animals) :
         
         print("\nWhich one would you like? Enter their name: ")
 
-        return get_valid_animal(pending_adoption)
+    adopted = get_valid_animal(pending_adoption)
+    
+    return adopted
+        
 
 # returns number of animals in shelter
 def get_animal_count(input_animals) :
@@ -74,7 +80,7 @@ plurals = [("mouse", "mice"),("octopus", "octopuses"), ("moose", "moose")]
 
 def plural(animal_type) :
     try :
-        animal_type = plurals[plurals[0].index(animal_type)][1]
+        animal_type = plurals[plurals[0].index(animal_type)][1] # .index() fails if not in list
     except :
         animal_type = animal_type + "s"
 
@@ -98,8 +104,11 @@ def get_valid_species(input_animals) :
     return want_species
 
 def get_valid_animal(input_pending_adoption) :
-    requested_name = input().replace(" ", "").lower()
-    success = False
+
+    requested_name = input_pending_adoption[0][0]
+
+    if get_animal_count(input_pending_adoption) > 1 :
+        requested_name = input().replace(" ", "").lower()
 
     for individual in input_pending_adoption :
         if requested_name == individual[0] : 
@@ -108,7 +117,8 @@ def get_valid_animal(input_pending_adoption) :
             
     print(f"We can't find {requested_name.capitalize()}. Please ensure correct spelling:")
     get_valid_animal(input_pending_adoption)
-    
+
+
 ## main program 
 
 animals = [] # empty list to hold animals and species in shelter
