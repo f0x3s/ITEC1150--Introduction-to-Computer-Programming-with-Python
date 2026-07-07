@@ -48,7 +48,6 @@ def available_species(available) :
     return seen
 
 def adopt_animal(species, input_animals) :
-
     pending_adoption = []
     adopted = []
     
@@ -98,7 +97,6 @@ def get_valid_species(input_animals) :
     return want_species
 
 def get_valid_animal(input_pending_adoption) :
-
     requested_name = input_pending_adoption[0][0]
 
     if get_animal_count(input_pending_adoption) > 1 :
@@ -127,7 +125,7 @@ animals = add_animal(30, 20, animals) # incorrect input
 animals = add_animal("Zeke", "Bird", animals)
 animals = add_animal("Moxxy ", "mouse", animals)
 animals = add_animal("Nim", "mouse ", animals)
-animals = add_animal("", "mouse", animals)
+animals = add_animal("", "mouse", animals) # incorrect input
 animals = add_animal("Steven", "mouse", animals)
 animals = add_animal("poly", "Bird", animals)
 
