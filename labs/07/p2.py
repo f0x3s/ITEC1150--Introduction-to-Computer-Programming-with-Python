@@ -19,6 +19,7 @@ def tupleToSet(tuple) :
     # avoiding set() function call for performance
     return {*(tuple)}
 
+# depricated 
 def isbnConflict(collection, testISBN) :
 
     seenFlag = False
@@ -32,8 +33,7 @@ def isbnConflict(collection, testISBN) :
     return seenFlag
 
 def addBook(collection, title, author, genre, isbn, tags) :
-
-    if isbnConflict(collection, isbn):
+    if bookWithIsbn(collection, isbn): # optional extension 
         print(f"\033[91mError: Attempted to add {title[0:10]}(...) but ISBN is already taken.\033[0m") # using ansi color escape codes for compatibility
         return collection
     
@@ -50,7 +50,7 @@ def addBook(collection, title, author, genre, isbn, tags) :
 
     return collection
 
-def books_with_tags(collection, tags) :
+def booksWithTags(collection, tags) :
     books = []
 
     for book in collection :
@@ -59,11 +59,18 @@ def books_with_tags(collection, tags) :
 
     return books
 
+def bookWithIsbn(collection, isbn):
+    found = ()
+
+    for book in collection :
+        if isbn == book["isbn"] :
+            found = (book["title"], book["author"]) 
+    return found
+
 # used for human-readable output
 def searchByTags(collection, tags) :
-
     print("\nsearching for tags: " + ", ".join(tags) + "...")
-    match = books_with_tags(collection, tags)
+    match = booksWithTags(collection, tags)
 
     if len(match) < 1 :
         print("Unfortunately, no books in our collecton match the tags requested.")
@@ -73,6 +80,17 @@ def searchByTags(collection, tags) :
 
     for index, book in enumerate(match):
         print(f"{index + 1}. {book["title"]} by {book["author"]}")
+
+def searchByIsbn(collection, isbn) :
+    print(f"\nSearching for ISBN: {isbn}")
+
+    found =  bookWithIsbn(collection, isbn)
+    if found :
+        print("We have: ")
+        print(f"{found[0]} by {found[1]} in our collection.")
+    else :
+        print("We do not have any books matching the ISBN requested.")
+        
 
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
@@ -145,14 +163,21 @@ library = addBook(library, "Glitch Feminism: A Manifesto", "Legacy Russell", CRI
                    "queer theory",
                    "manifesto"})
 
+# search by tags
 tagsToSearch1 = {"techno-critical theory"}
 tagsToSearch2 = {"speculative fiction"}
 
 tagsToSearch3 = {"speculative fiction", "Afrofuturism"}
 tagsToSearch4 = {"cyberfeminism", "techno-critical theory"}
 
-# search by tags
 searchByTags(library, tagsToSearch1)
 searchByTags(library, tagsToSearch2)
 searchByTags(library, tagsToSearch3)
 searchByTags(library, tagsToSearch4)
+
+# search by isbn
+isbn1 = 9781935963349
+isbn2 = 9781945963349 # does not exist 
+
+searchByIsbn(library, isbn1)
+searchByIsbn(library, isbn2)
