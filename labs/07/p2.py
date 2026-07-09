@@ -91,10 +91,27 @@ def searchByIsbn(collection, isbn) :
     else :
         print("We do not have any books matching the ISBN requested.")
         
+# tests
+testCollection = []
+testBook = {
+    "title": "testTitle",
+    "author": "testAuthor",
+    "genre": "testGenre",
+    "isbn": 1234,
+    "tags": {"t1", "t2", "t3", "t4"}
+}
+
+testCollection = addBook(testCollection, testBook["title"], testBook["author"], testBook["genre"], testBook["isbn"], testBook["tags"])
+
+assert tupleToSet((1,2)) == {1,2}, "\033[91mtuple to set function failed\033[0m"
+assert bookWithIsbn(testCollection, 1234) == (testBook["title"], testBook["author"]), "\033[91msearch by isbn function failed\033[0m"
+assert booksWithTags(testCollection, {"t1"}) == [testBook], "\033[91msearch by tags function failed\033[0m"
+
 
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
 # books from my personal library
+
 
 print("Adding books to library...")
 
