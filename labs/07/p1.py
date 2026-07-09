@@ -1,3 +1,13 @@
+# module 7 lab part 1
+# foxes
+# Instructor: Corin Dennison
+#
+# python version 3.14.6
+# created 7/8/26 - foxes
+# modified 7/9/26 - foxes
+#
+# description: Data Structures
+
 # Let's start with dictionaries to represent food stands
 food_stands = {
     "Pronto Pups": "Corn Dogs",
@@ -11,6 +21,12 @@ for stand, food in food_stands.items():
 
 # Adding a new food stand
 food_stands["Fresh French Fries"] = "Fries"
+
+# Adding a new food stand for optional challenge
+food_stands["Sweet Martha's"] = "Pancakes and pasteries"
+
+# Adding a new food stand for optional challenge
+food_stands["The Cheese Curd Tacos"] = "Tacos with a Midwest Flair"
 
 # Updating a food item
 food_stands["Pronto Pups"] = "Footlong Corn Dogs"
@@ -53,3 +69,16 @@ print(activities)
 activities.remove("Riding the Giant Slide")
 print("\nAfter removing an activity:")
 print(activities)
+
+# Let's create a daily planner using all three data structures
+daily_planner = {
+    "Morning": [("Breakfast", food_stands["Sweet Martha's"]), ("Ride", attractions[0][0])],
+    "Afternoon": [("Lunch", food_stands["Pronto Pups"]), ("Activity", list(activities)[0])],
+    "Evening": [("Dinner", food_stands["The Cheese Curd Tacos"]), ("Ride", attractions[2][0])]
+}
+
+print("\nYour Minnesota State Fair Daily Planner:")
+for time, plans in daily_planner.items():
+    print(time + ":")
+    for plan in plans:
+        print("- " + plan[0] + ": " + plan[1])
