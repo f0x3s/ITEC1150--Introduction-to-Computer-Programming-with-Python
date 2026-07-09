@@ -106,15 +106,14 @@ try :
     assert bookWithIsbn(testCollection, 1234) == (testBook["title"], testBook["author"]), "search by isbn function failed"
     assert booksWithTags(testCollection, {"t1"}) == [testBook], "search by tags function failed"
     print("All unit tests passed. Starting program...\n")
-except AssertionError as e:
+
+except AssertionError as e :
     print(f"\033[91m{e}\033[0m")
     quit()
 
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
 # books from my personal library
-
-
 print("Adding books to library...")
 
 library = addBook(library, "Aye, and Gomorrah", "Samuel R. Delany", SCIFI, 9780375706714, 

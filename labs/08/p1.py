@@ -17,7 +17,6 @@ class Animal :
     def speak(self, sound) :
         return f"{self.name} says {sound}"
     
-
 class Dog(Animal) :
     def speak(self, sound = "Woof"):
         return super().speak(sound)

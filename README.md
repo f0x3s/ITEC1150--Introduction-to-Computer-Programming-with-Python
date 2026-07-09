@@ -20,5 +20,10 @@ Home for all coursework projects.
 > - 📁 [`06`](labs/06)/
 >   - 🐍 [`p1.py`](labs/06/p1.py) — *Part 1: Fast Food Functions*
 >   - 🐍 [`p2.py`](labs/06/p2.py) — *Part 2: Animal Shelter Management System*
+> - 📁 [`07`](labs/07)/
+>   - 🐍 [`p1.py`](labs/07/p1.py) — *Part 1: Data Structures*
+>   - 🐍 [`p2.py`](labs/07/p2.py) — *Part 2: Book Collection*
+> - 📁 [`08`](labs/08)/
+>   - 🐍 [`p1.py`](labs/08/p1.py) — *Part 1: Object Oriented Programming (OOP)*
 >
 > 📂 **[py4e](py4e)/** — *in-textbook work & examples: Py4E*
