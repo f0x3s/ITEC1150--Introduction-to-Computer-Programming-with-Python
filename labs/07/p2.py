@@ -50,6 +50,30 @@ def addBook(collection, title, author, genre, isbn, tags) :
 
     return collection
 
+def books_with_tags(collection, tags) :
+    books = []
+
+    for book in collection :
+        if tags.issubset(book["tags"]) :
+            books.append(book)
+
+    return books
+
+# used for human-readable output
+def searchByTags(collection, tags) :
+
+    print("\nsearching for tags: " + ", ".join(tags) + "...")
+    match = books_with_tags(collection, tags)
+
+    if len(match) < 1 :
+        print("Unfortunately, no books in our collecton match the tags requested.")
+        return
+    
+    print("\nYou may enjoy: ")
+
+    for index, book in enumerate(match):
+        print(f"{index + 1}. {book["title"]} by {book["author"]}")
+
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
 # books from my personal library
@@ -65,7 +89,7 @@ library = addBook(library, "Aye, and Gomorrah", "Samuel R. Delany", SCIFI, 97803
 
 library = addBook(library, "Myth and Guilt: The Crime and Punishment of Mankind", "Theodor Reik", CRIT, 9781199370785, 
                   {"film studies",                                                                                                             
-                    "mora; psychology", 
+                    "moral psychology", 
                     "German Expressionism", 
                     "Weimar cinema", 
                     "crime and guilt"})
@@ -121,5 +145,14 @@ library = addBook(library, "Glitch Feminism: A Manifesto", "Legacy Russell", CRI
                    "queer theory",
                    "manifesto"})
 
+tagsToSearch1 = {"techno-critical theory"}
+tagsToSearch2 = {"speculative fiction"}
 
-# print(library)
+tagsToSearch3 = {"speculative fiction", "Afrofuturism"}
+tagsToSearch4 = {"cyberfeminism", "techno-critical theory"}
+
+# search by tags
+searchByTags(library, tagsToSearch1)
+searchByTags(library, tagsToSearch2)
+searchByTags(library, tagsToSearch3)
+searchByTags(library, tagsToSearch4)
