@@ -46,11 +46,15 @@ def addBook(collection, title, author, genre, isbn, tags) :
 
     collection.append(book)
 
+    print(f"\x1b[32mSUCCESS: Added: {title[0:10]}(...) to library\x1b[0m") # using ansi color escape codes for compatibility
+
     return collection
 
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
 # books from my personal library
+
+print("Adding books to library...")
 
 library = addBook(library, "Aye, and Gomorrah", "Samuel R. Delany", SCIFI, 9780375706714, 
                   {"New Wave science fiction", 
@@ -116,4 +120,6 @@ library = addBook(library, "Glitch Feminism: A Manifesto", "Legacy Russell", CRI
                    "digital embodiment",
                    "queer theory",
                    "manifesto"})
-print(library)
+
+
+# print(library)
