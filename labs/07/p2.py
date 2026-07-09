@@ -45,8 +45,8 @@ def addBook(collection, title, author, genre, isbn, tags) :
     book["tags"] = tupleToSet(tags)
 
     collection.append(book)
-
-    print(f"\x1b[32mSUCCESS: Added: {title[0:10]}(...) to library\x1b[0m") # using ansi color escape codes for compatibility
+    if title != "testTitle" :
+        print(f"\x1b[32mSUCCESS: Added: {title[0:10]}(...) to library\x1b[0m") # using ansi color escape codes for compatibility
 
     return collection
 
@@ -100,13 +100,15 @@ testBook = {
     "isbn": 1234,
     "tags": {"t1", "t2", "t3", "t4"}
 }
-
-testCollection = addBook(testCollection, testBook["title"], testBook["author"], testBook["genre"], testBook["isbn"], testBook["tags"])
-
-assert tupleToSet((1,2)) == {1,2}, "\033[91mtuple to set function failed\033[0m"
-assert bookWithIsbn(testCollection, 1234) == (testBook["title"], testBook["author"]), "\033[91msearch by isbn function failed\033[0m"
-assert booksWithTags(testCollection, {"t1"}) == [testBook], "\033[91msearch by tags function failed\033[0m"
-
+try :
+    assert addBook(testCollection, testBook["title"], testBook["author"], testBook["genre"], testBook["isbn"], testBook["tags"]) == [testBook], "adding book to collection function failed"
+    assert tupleToSet((1,2)) == {1,2}, "tuple to set function failed"
+    assert bookWithIsbn(testCollection, 1234) == (testBook["title"], testBook["author"]), "search by isbn function failed"
+    assert booksWithTags(testCollection, {"t1"}) == [testBook], "search by tags function failed"
+    print("All unit tests passed. Starting program...\n")
+except AssertionError as e:
+    print(f"\033[91m{e}\033[0m")
+    quit()
 
 # ai used exclusively to generate tags for each book so I could quickly create a large library to test later functions
 # other book information sourced from https://isbnsearch.org/isbn/9781199370785
