@@ -7,10 +7,6 @@
 # modified 7/9/26 - foxes
 #
 # description: Python- based application to help customers select toppings for their tacos
-party_count = 0
-
-MAX_TOPPING = 4
-MAX_DIP = 2
 
 class CustomerOrder :
     def __init__(self, name) :
@@ -33,8 +29,12 @@ class CustomerOrder :
             if "Salsa" in self.order[key]:
                 print("\t\tOne Spicy Taco coming up!")
 
+party_count = 0
 
-human_numbers = ["first", "second", "third", "fourth", "fifth","sixth","seventh","eighth","ninth","tenth"]
+MAX_TOPPING = 4
+MAX_DIP = 2
+
+HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth","sixth","seventh","eighth","ninth","tenth"]
 
 taco_options = {
     "tortilla" : (1, ["Corn", "Flour", "Whole Wheat"]),
@@ -56,7 +56,7 @@ def count_options(options, key) :
     return count + 1 if options[key][0] > 1 else count
 
 def human_number(number) :
-    return human_numbers[number]
+    return HUMAN_NUMBERS[number]
 
 def is_done(options, key, selection) :
 
@@ -116,7 +116,7 @@ def sanitize_party_count(count, max) :
 
 print("Welcome to Catrinas Mexican Grill")
 print("Get ready to build your taco(s)...")
-max_guests = len(human_numbers)
+max_guests = len(HUMAN_NUMBERS)
 
 print(f"\nHow many are in your party? (maximum {max_guests} guests): ")
 
