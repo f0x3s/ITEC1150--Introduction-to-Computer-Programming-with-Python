@@ -34,13 +34,14 @@ party_count = 0
 MAX_TOPPING = 4
 MAX_DIP = 2
 
-HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth","sixth","seventh","eighth","ninth","tenth"]
+HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
-taco_options = {
+menu_options = {
     "tortilla" : (1, ["Corn", "Flour", "Whole Wheat"]),
     "filling" : (1, ["Beans", "Chicken", "Fish", "Beef"]),
     "topping(s)" : (MAX_TOPPING, ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
-    "dip(s)" : (MAX_DIP, ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"])
+    "dip(s)" : (MAX_DIP, ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"]),
+    "drink" : (1, ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 }
 
 def display_options(options, key) :
@@ -137,7 +138,7 @@ for individual in range(party_count):
     name = input()
 
     customer = CustomerOrder(name)
-    customer.buildOrder(taco_options)
+    customer.buildOrder(menu_options)
     party_orders.append(customer)
 
 print("\nOrder complete!\n")
