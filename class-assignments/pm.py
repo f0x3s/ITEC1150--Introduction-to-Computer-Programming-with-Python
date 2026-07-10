@@ -54,8 +54,6 @@ class MenuItem :
             raise ValueError("selection not in bounds")
 
         return self.max_selections > 1 and selection == num_options
-
-
     
 
 party_count = 0
@@ -66,25 +64,15 @@ MAX_DIP = 2
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
 menu_options = {
-    "tortilla" : (1, ["Corn", "Flour", "Whole Wheat"]),
-    "filling" : (1, ["Beans", "Chicken", "Fish", "Beef"]),
-    "topping(s)" : (MAX_TOPPING, ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
-    "dip(s)" : (MAX_DIP, ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"]),
-    "drink" : (1, ["Mexican Coke", "Jarritos", "Water", "Horchata"])
+    MenuItem("tortilla", 1, ["Corn", "Flour", "Whole Wheat"]),
+    MenuItem("filling", 1, ["Beans", "Chicken", "Fish", "Beef"]),
+    MenuItem("topping(s)", MAX_TOPPING, ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
+    MenuItem("dip(s)", MAX_DIP, ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"]),
+    MenuItem("drink", 1, ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 }
-
 
 def human_number(number) :
     return HUMAN_NUMBERS[number]
-
-def is_done(options, key, selection) :
-
-    num_options = count_options(options, key)
-
-    if selection > num_options or selection < 1 :
-        raise ValueError("selection not in bounds")
-
-    return options[key][0] > 1 and selection == num_options
 
 def query_user(options) :
     order = {}
