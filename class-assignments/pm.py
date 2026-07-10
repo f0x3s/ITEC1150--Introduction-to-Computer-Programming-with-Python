@@ -55,7 +55,6 @@ class MenuItem :
 
         return self.max_selections > 1 and selection == num_options
     
-
 party_count = 0
 
 MAX_TOPPING = 4
@@ -64,11 +63,25 @@ MAX_DIP = 2
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
 menu_options = {
-    MenuItem("tortilla", 1, ["Corn", "Flour", "Whole Wheat"]),
-    MenuItem("filling", 1, ["Beans", "Chicken", "Fish", "Beef"]),
-    MenuItem("topping(s)", MAX_TOPPING, ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
-    MenuItem("dip(s)", MAX_DIP, ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"]),
-    MenuItem("drink", 1, ["Mexican Coke", "Jarritos", "Water", "Horchata"])
+    MenuItem("tortilla", 
+             1, 
+             ["Corn", "Flour", "Whole Wheat"]),
+
+    MenuItem("filling", 
+             1, 
+             ["Beans", "Chicken", "Fish", "Beef"]),
+
+    MenuItem("topping(s)", 
+             MAX_TOPPING, 
+             ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
+
+    MenuItem("dip(s)", 
+             MAX_DIP, 
+             ["Red Sauce", "Green Sauce", "Queso Blanco", "Guacamole"]),
+
+    MenuItem("drink", 
+             1, 
+             ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 }
 
 def human_number(number) :
@@ -77,22 +90,19 @@ def human_number(number) :
 def query_user(options) :
     order = {}
 
-    for key in options.keys() :
+    for option in options:
    
-        order[key] = []
+        order[option.name] = []
 
-        num_items = options[key][0]
         done_flag = False
 
-        for index in range(num_items) :
-        
+        for index in range(option.max_selections) :
             if done_flag :
-                print("done")
                 break
         
-            str_index = "" if num_items == 1 else  human_number(index) + " "
+            str_index = "" if option.max_selections == 1 else  human_number(index) + " "
 
-            print(f"\nSelect your {str_index}{key} (1-{count_options(options, key)}):") 
+            print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
             display_options(options, key)
 
             while True :
