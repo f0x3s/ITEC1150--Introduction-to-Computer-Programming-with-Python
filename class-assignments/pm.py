@@ -131,43 +131,6 @@ menu_options = [
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
-def query_user(options) :
-    order = {}
-
-    for option in options:
-   
-        order[option.name] = []
-
-        done_flag = False
-
-        for index in range(option.max_selections) :
-            if done_flag :
-                break
-        
-            str_index = "" if option.max_selections == 1 else  human_number(index) + " "
-
-            print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
-            option.display()
-
-            while True :
-                user_input = input()
-                try :
-                    user_input = int(user_input)
-
-                    if(option.is_done(user_input)):
-                            done_flag = True
-                            break
-                    
-                    user_input = option.get_choice(user_input)
-
-                    order[option.name].append(user_input )
-                    break
-            
-                except :
-                    print(f"Error, expecting a number between 1 and {option.count_options()}:")
-    
-    return order
-
 def sanitize_party_count(count, max) :
     count = int(count)
     
