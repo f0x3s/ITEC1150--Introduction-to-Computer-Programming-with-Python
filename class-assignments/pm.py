@@ -45,7 +45,7 @@ class CustomerOrder :
                         order[option.name].append(user_input )
                         break
                 
-                    except :
+                    except ValueError :
                         print(f"Error, expecting a number between 1 and {option.count_options()}:")
         
         self.order = order
@@ -53,18 +53,18 @@ class CustomerOrder :
     def display_order(self) :
         print(f"{self.name} :")
 
-        for key in self.order.keys() :
+        for key, choices in self.order.items() :
 
             print(f"\t{key.capitalize()}: ", end="")
 
-            selections = ", ".join(self.order[key]) if self.order[key] else "None"
+            selections = ", ".join(choices) if choices else "None"
             print(selections)
 
-            if "Salsa" in self.order[key]:
+            if "Salsa" in choices:
                 print("\t\tOne Spicy Taco coming up!")
 
 class MenuItem :
-    def __init__(self, name, max_selections, items,) :
+    def __init__(self, name, max_selections, items) :
         self.name = name
         self.max_selections = max_selections
         self.items = items
@@ -131,13 +131,15 @@ menu_options = [
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
-def sanitize_party_count(count, max) :
+def sanitize_party_count(count, maximum) :
     count = int(count)
     
-    if count < 1 or count > max:
+    if count < 1 or count > maximum:
         raise ValueError("selection not in bounds")
         
     return count
+
+
 
 print("Welcome to Catrinas Mexican Grill")
 print("Get ready to build your taco(s)...")
@@ -149,7 +151,7 @@ while True :
     try :
         party_count = sanitize_party_count(input(),max_guests)
         break
-    except :
+    except ValueError :
         print(f"Expecting an integer between 1 and {max_guests}:")
 
 party_orders = []
