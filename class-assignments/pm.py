@@ -12,6 +12,25 @@ party_count = 0
 MAX_TOPPING = 4
 MAX_DIP = 2
 
+class CustomerOrder :
+    def __init__(self, name, order) :
+        self.name = name 
+        self.order = order
+    
+    def displayOrder(self) :
+        print(f"{self.name} :")
+
+        for key in self.order.keys() :
+
+            print(f"\t{key.capitalize()}: ", end="")
+
+            selections = ", ".join(self.order[key]) if self.order[key] else "None"
+            print(selections)
+
+            if "Salsa" in self.order[key]:
+                print("\t\tOne Spicy Taco coming up!")
+
+
 human_numbers = ["first", "second", "third", "fourth", "fifth","sixth","seventh","eighth","ninth","tenth"]
 
 taco_options = {
@@ -107,30 +126,17 @@ while True :
 
 party_orders = []
 
-for order in range(party_count):
+for individual in range(party_count):
 
-    party_index = "W" if party_count == 1 else human_number(order).capitalize() + " party member, w"
+    party_index = "W" if party_count == 1 else human_number(individual).capitalize() + " party member, w"
 
     print(f"\n{party_index}hat is your name?: ")
     name = input()
 
-    party_orders.append({
-        "name": name,
-        "order": query_user(taco_options)
-    })
+    customer = CustomerOrder(name, query_user(taco_options))
+    party_orders.append(customer)
 
 print("\nOrder complete!\n")
 
-for member in party_orders:
-
-    print(f"{member['name']}:")
-
-    for key in member["order"]:
-
-        print(f"\t{key.capitalize()}: ", end="")
-
-        selections = ", ".join(member["order"][key]) if member["order"][key] else "None"
-        print(selections)
-
-        if "Salsa" in member["order"][key]:
-            print("\t\tOne Spicy Taco coming up!")
+for customer in party_orders:
+    customer.displayOrder()
