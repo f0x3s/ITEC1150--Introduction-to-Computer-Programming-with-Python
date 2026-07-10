@@ -80,6 +80,10 @@ menu_options = [
     MenuItem("topping(s)", 
              MAX_TOPPING, 
              ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
+             
+    MenuItem("side", 
+             1, 
+             ["White Rice", "Brown Rice", "Beans"]),
 
     MenuItem("dip(s)", 
              MAX_DIP, 
