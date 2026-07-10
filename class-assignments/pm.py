@@ -13,10 +13,13 @@ MAX_TOPPING = 4
 MAX_DIP = 2
 
 class CustomerOrder :
-    def __init__(self, name, order) :
+    def __init__(self, name) :
         self.name = name 
-        self.order = order
+        self.order = {}
     
+    def buildOrder(self, options) :
+        self.order = query_user(options)
+
     def displayOrder(self) :
         print(f"{self.name} :")
 
@@ -133,7 +136,8 @@ for individual in range(party_count):
     print(f"\n{party_index}hat is your name?: ")
     name = input()
 
-    customer = CustomerOrder(name, query_user(taco_options))
+    customer = CustomerOrder(name)
+    customer.buildOrder(taco_options)
     party_orders.append(customer)
 
 print("\nOrder complete!\n")
