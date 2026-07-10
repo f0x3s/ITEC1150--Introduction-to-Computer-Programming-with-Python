@@ -13,10 +13,10 @@ class CustomerOrder :
         self.name = name 
         self.order = {}
     
-    def buildOrder(self, options) :
+    def build_order(self, options) :
         self.order = query_user(options)
 
-    def displayOrder(self) :
+    def display_order(self) :
         print(f"{self.name} :")
 
         for key in self.order.keys() :
@@ -28,6 +28,35 @@ class CustomerOrder :
 
             if "Salsa" in self.order[key]:
                 print("\t\tOne Spicy Taco coming up!")
+
+class MenuItem :
+    def __init__(self, name, items, max_selections)
+        self.name = name
+        self.max_selections = max_selections
+        self.items = items
+
+    def display(self) :
+        for index, choice in enumerate(self.choices) :
+            print(f"{index + 1}. {choice}")
+
+        if self.max_selections > 1 :
+            print(f"{len(self.choices) + 1}. Done (no more {self.name}s)")
+    
+    def count_options(self) :
+        count = len(self.choices) 
+
+        return count + 1 if self.max_selections > 1 else count
+    
+    def is_done(self, selection)
+        num_options = self.count_options()
+
+        if selection > num_options or selection < 1 :
+            raise ValueError("selection not in bounds")
+
+        return self.max_selections > 1 and selection == num_options
+
+
+    
 
 party_count = 0
 
@@ -44,17 +73,6 @@ menu_options = {
     "drink" : (1, ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 }
 
-def display_options(options, key) :
-    for index, option in enumerate(options[key][1]) :
-        print(f"{index + 1}. {option}")
-
-    if options[key][0] > 1 :
-        print(f"{len(options[key][1]) + 1}. Done (no more {key}s)")
-
-def count_options(options, key) :
-    count = len(options[key][1]) 
-
-    return count + 1 if options[key][0] > 1 else count
 
 def human_number(number) :
     return HUMAN_NUMBERS[number]
@@ -138,7 +156,7 @@ for individual in range(party_count):
     name = input()
 
     customer = CustomerOrder(name)
-    customer.buildOrder(menu_options)
+    customer.build_order(menu_options)
     party_orders.append(customer)
 
 print("\nOrder complete!\n")
