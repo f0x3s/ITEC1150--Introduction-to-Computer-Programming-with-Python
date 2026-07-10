@@ -30,30 +30,36 @@ class CustomerOrder :
                 print("\t\tOne Spicy Taco coming up!")
 
 class MenuItem :
-    def __init__(self, name, items, max_selections)
+    def __init__(self, name, max_selections, items,) :
         self.name = name
         self.max_selections = max_selections
         self.items = items
 
     def display(self) :
-        for index, choice in enumerate(self.choices) :
+        for index, choice in enumerate(self.items) :
             print(f"{index + 1}. {choice}")
 
         if self.max_selections > 1 :
-            print(f"{len(self.choices) + 1}. Done (no more {self.name}s)")
+            print(f"{len(self.items) + 1}. Done (no more {self.name}s)")
     
     def count_options(self) :
-        count = len(self.choices) 
+        count = len(self.items) 
 
         return count + 1 if self.max_selections > 1 else count
     
-    def is_done(self, selection)
+    def is_done(self, selection) :
         num_options = self.count_options()
 
         if selection > num_options or selection < 1 :
             raise ValueError("selection not in bounds")
 
         return self.max_selections > 1 and selection == num_options
+    
+    def get_choice(self, selection) :
+        if selection < 1 or selection > len(self.items) :
+            raise ValueError("selection not in bounds")
+        
+        return self.items[selection - 1]
     
 party_count = 0
 
@@ -62,7 +68,7 @@ MAX_DIP = 2
 
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
-menu_options = {
+menu_options = [
     MenuItem("tortilla", 
              1, 
              ["Corn", "Flour", "Whole Wheat"]),
@@ -82,7 +88,7 @@ menu_options = {
     MenuItem("drink", 
              1, 
              ["Mexican Coke", "Jarritos", "Water", "Horchata"])
-}
+]
 
 def human_number(number) :
     return HUMAN_NUMBERS[number]
@@ -103,23 +109,24 @@ def query_user(options) :
             str_index = "" if option.max_selections == 1 else  human_number(index) + " "
 
             print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
-            display_options(options, key)
+            option.display()
 
             while True :
                 user_input = input()
                 try :
                     user_input = int(user_input)
-                    if(is_done(options, key, user_input)) :
+
+                    if(option.is_done(user_input)):
                             done_flag = True
                             break
                     
-                    user_input = options[key][1][user_input-1]
+                    user_input = option.get_choice(user_input)
 
-                    order[key].append(user_input)
+                    order[option.name].append(user_input )
                     break
             
                 except :
-                    print(f"Error, expecting a number between 1 and {count_options(options, key)}:")
+                    print(f"Error, expecting a number between 1 and {option.count_options()}:")
     
     return order
 
@@ -128,6 +135,7 @@ def sanitize_party_count(count, max) :
     
     if count < 1 or count > max:
         raise ValueError("selection not in bounds")
+        
     return count
 
 
@@ -160,4 +168,4 @@ for individual in range(party_count):
 print("\nOrder complete!\n")
 
 for customer in party_orders:
-    customer.displayOrder()
+    customer.display_order()
