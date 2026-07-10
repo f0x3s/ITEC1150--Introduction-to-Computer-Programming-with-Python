@@ -14,7 +14,41 @@ class CustomerOrder :
         self.order = {}
     
     def build_order(self, options) :
-        self.order = query_user(options)
+        order = {}
+
+        for option in options:
+    
+            order[option.name] = []
+
+            done_flag = False
+
+            for index in range(option.max_selections) :
+                if done_flag :
+                    break
+            
+                str_index = "" if option.max_selections == 1 else  human_number(index) + " "
+
+                print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
+                option.display()
+
+                while True :
+                    user_input = input()
+                    try :
+                        user_input = int(user_input)
+
+                        if(option.is_done(user_input)):
+                                done_flag = True
+                                break
+                        
+                        user_input = option.get_choice(user_input)
+
+                        order[option.name].append(user_input )
+                        break
+                
+                    except :
+                        print(f"Error, expecting a number between 1 and {option.count_options()}:")
+        
+        self.order = order
 
     def display_order(self) :
         print(f"{self.name} :")
@@ -80,7 +114,7 @@ menu_options = [
     MenuItem("topping(s)", 
              MAX_TOPPING, 
              ["Cheese", "Lettuce", "Tomatoes", "Onions", "Salsa", "Sour Cream"]),
-             
+
     MenuItem("side", 
              1, 
              ["White Rice", "Brown Rice", "Beans"]),
@@ -141,7 +175,6 @@ def sanitize_party_count(count, max) :
         raise ValueError("selection not in bounds")
         
     return count
-
 
 print("Welcome to Catrinas Mexican Grill")
 print("Get ready to build your taco(s)...")
