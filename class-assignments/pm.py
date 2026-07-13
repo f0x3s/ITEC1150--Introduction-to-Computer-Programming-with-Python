@@ -199,3 +199,5 @@ print("\nOrder complete!\n")
 
 for customer in party_orders :
     customer.display_order()
+
+print("\nThank you for ordering from Catrinas Mexican Grill!")
