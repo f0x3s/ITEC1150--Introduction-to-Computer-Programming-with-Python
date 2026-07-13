@@ -6,7 +6,7 @@
 # created 7/9/26 - foxes
 # modified 7/9/26 - foxes
 #
-# description: Python- based application to help customers select toppings for their tacos
+# description: Python-based application to help customers select toppings for their tacos
 
 class CustomerOrder :
     def __init__(self, name) :
@@ -36,7 +36,6 @@ class CustomerOrder :
                 str_index = "" if option.max_selections == 1 else  human_number(index) + " "
                 print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
 
-                # print options
                 option.display()
 
                 while True :
@@ -58,8 +57,7 @@ class CustomerOrder :
                 
                     except ValueError :
                         print(f"Error, expecting a number between 1 and {option.count_options()}:")
-        
-        # store completed order dict
+
         self.order = order
 
     # handles final human-readable output
