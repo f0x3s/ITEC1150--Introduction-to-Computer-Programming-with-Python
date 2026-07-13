@@ -24,6 +24,8 @@ class CustomerOrder :
             
             done_flag = False
 
+            # In my architecture, I felt a for loop made more sense than the while loop asked in the instructions, since max_selections is constant per MenuItem. 
+            # If I were to implement a while loop, I would check an incremented index value against option.max_selections.
             for index in range(option.max_selections) :
 
                 # used to break loop if user does not want to select the maximum number of options allowed by MenuItem's max_selections
@@ -42,21 +44,22 @@ class CustomerOrder :
                     try :
                         user_input = int(user_input)
 
-                        # exit loop if no more selections allowed by MenuItem's max_selections
-                        if(option.is_done(user_input)):
-                                done_flag = True
-                                break
-                        
-                        # convert integer to named option.
+                        # convert integer to named option. Throws ValueError if selection OOB.
                         user_input = option.get_choice(user_input)
 
-                        # append named option to the value list associated with current MenuItem's key in the orders dict.
+                        # exit loop if user selects "Done" for item allowing multiple selections
+                        if user_input is None:
+                                done_flag = True
+                                break
+
+                        # append named option to the list (value) associated with current MenuItem's key in the orders dict.
                         order[option.name].append(user_input)
                         break
                 
                     except ValueError :
                         print(f"Error, expecting a number between 1 and {option.count_options()}:")
         
+        # store completed order dict
         self.order = order
 
     # handles final human-readable output
@@ -81,37 +84,33 @@ class MenuItem :
         self.max_selections = max_selections
         self.choices = choices
 
+    # print choices
     def display(self) :
         for index, choice in enumerate(self.choices) :
             print(f"{index + 1}. {choice}")
 
+        # incl."done" choice where max_selections allows multiple items
         if self.max_selections > 1 :
             print(f"{len(self.choices) + 1}. Done (no more {self.name})")
     
+    # returns # of options
     def count_options(self) :
         count = len(self.choices) 
 
+        # (1) added to first case because items that allow multiple selections also include a 'done' option.
         return count + 1 if self.max_selections > 1 else count
     
-    # used to check to see if user has exceeded MenuItem's max_selections
-    def is_done(self, selection) :
-
+    # convert selection integer to named option from choices list, or None if user selects "done" for item allowing multiple selections.
+    def get_choice(self, selection):
+        
         num_options = self.count_options()
 
-        if selection > num_options or selection < 1 :
+        if selection < 1 or selection > num_options:
             raise ValueError("selection not in bounds")
         
-        # true 
-        return self.max_selections > 1 and selection == num_options
-    
-    # convert selection integer to named option from choices list
-    def get_choice(self, selection) :
+        if self.max_selections > 1 and selection == num_options:
+            return None
 
-        num_options = self.count_options()
-
-        if selection > num_options or selection < 1 :
-            raise ValueError("selection not in bounds")
-        
         return self.choices[selection - 1]
     
 party_count = 0
@@ -121,7 +120,8 @@ MAX_DIP = 2
 
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
-# list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. I added a couple additional options to show the scaleability of my code.
+# list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. 
+# I added a couple additional options to show the scalability of my code.
 menu_options = [
     MenuItem("tortilla", 
              1, 
@@ -148,7 +148,7 @@ menu_options = [
              ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 ]
 
-# function to convert integer to string: 1 == "first", 2 == "second", etc using HUMAN_NUMBERS list
+# function to convert index integer to ordinal string: 0 == "first", 1 == "second", etc using HUMAN_NUMBERS list
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
@@ -168,7 +168,6 @@ max_guests = len(HUMAN_NUMBERS) # a little cheesy, but guest # limited by number
 print(f"\nHow many are in your party? (maximum {max_guests} guests): ")
 
 # prompts user for # of guests in party (repeatedly, if necessary, until acceptable response given. sanitize_party_count() throws a valueError for unacceptable input, triggering the except block before the break statement).
-# is there a more recommended way to approach this re: readability/best practices?
 while True :
     try :
         party_count = sanitize_party_count(input(),max_guests)
