@@ -14,19 +14,20 @@ class CustomerOrder :
         self.order = {}
     
     # takes list of MenuItem objects as 'options'
-    # if the code was any more complex, i would separate the ui from this method and just use it to handle assevbling the order dict.
+    # if the code was any more complex, i would separate the ui from this method and just use it to handle assembling the order dict.
     def build_order(self, options) :
         order = {}
 
-        for option in options:
+        for option in options :
             
             # creates key in order dict for MenuItem object with an empty list as its value
             order[option.name] = []
             
             done_flag = False
 
-            # In my architecture, I felt a for loop made more sense than the while loop asked in the instructions, since max_selections is constant per MenuItem, and would be more legible since it wouldn't need a separately instanced incremental variable.
-            # If I were to implement a while loop, I would check an incremented variable against option.max_selections.
+            # in my architecture, I felt a for loop made more sense than the while loop asked in the instructions since max_selections is constant per MenuItem
+            # i also felt it would be more legible since it wouldn't need a separately instanced incremental variable.
+            # if I were to implement a while loop, I would check an incremented variable against option.max_selections.
             for index in range(option.max_selections) :
 
                 # used to break loop if user does not want to select the maximum number of options allowed by MenuItem's max_selections
@@ -48,11 +49,11 @@ class CustomerOrder :
                         user_input = option.get_choice(user_input)
 
                         # exit loop if user selects "Done" for item allowing multiple selections
-                        if user_input is None:
+                        if user_input is None :
                                 done_flag = True
                                 break
 
-                        # append named option to the list (value) associated with current MenuItem's key in the orders dict.
+                        # append named option to the list (value) associated with current MenuItem's name key in the orders dict.
                         order[option.name].append(user_input)
                         break
                 
@@ -74,7 +75,7 @@ class CustomerOrder :
             selections = ", ".join(choices) if choices else "None"
             print(selections)
 
-            if "Salsa" in choices:
+            if "Salsa" in choices :
                 print("\t\tOne Spicy Taco coming up!")
 
 class MenuItem :
@@ -100,14 +101,14 @@ class MenuItem :
         return count + 1 if self.max_selections > 1 else count
     
     # convert selection integer to named option from choices list, or None if user selects "done" for item allowing multiple selections.
-    def get_choice(self, selection):
+    def get_choice(self, selection) :
         
         num_options = self.count_options()
 
-        if selection < 1 or selection > num_options:
+        if selection < 1 or selection > num_options :
             raise ValueError("selection not in bounds")
         
-        if self.max_selections > 1 and selection == num_options:
+        if self.max_selections > 1 and selection == num_options :
             return None
 
         return self.choices[selection - 1]
@@ -151,11 +152,11 @@ menu_options = [
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
-# make sure party count is between one and some maximum number of people, othewise throwing a ValueError to function within a looped try/except block.
+# make sure party count is between one and some maximum number of people, otherwise throwing a ValueError to function within a looped try/except block.
 def sanitize_party_count(count, maximum) :
     count = int(count)
 
-    if count < 1 or count > maximum:
+    if count < 1 or count > maximum :
         raise ValueError("selection not in bounds")
         
     return count
@@ -166,10 +167,10 @@ max_guests = len(HUMAN_NUMBERS) # a little cheesy, but guest # limited by number
 
 print(f"\nHow many are in your party? (maximum {max_guests} guests): ")
 
-# prompts user for # of guests in party (repeatedly, if necessary, until acceptable response given. sanitize_party_count() throws a valueError for unacceptable input, triggering the except block before the break statement).
+# prompts user for # of guests in party (repeatedly, if necessary, until acceptable response given. sanitize_party_count() throws a ValueError for unacceptable input, triggering the except block before the break statement).
 while True :
     try :
-        party_count = sanitize_party_count(input(),max_guests)
+        party_count = sanitize_party_count(input(), max_guests)
         break
     except ValueError :
         print(f"Expecting an integer between 1 and {max_guests}:")
@@ -177,7 +178,7 @@ while True :
 # list for customer objects containing orders
 party_orders = []
 
-for individual in range(party_count):
+for individual in range(party_count) :
 
     if party_count == 1 :
         print(f"\nWhat is your name?: ")
@@ -196,5 +197,5 @@ for individual in range(party_count):
 
 print("\nOrder complete!\n")
 
-for customer in party_orders:
+for customer in party_orders :
     customer.display_order()
