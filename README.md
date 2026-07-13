@@ -4,6 +4,8 @@ Personal repo for Intro to Programming with instructor Corin Dennison.
 Home for all coursework projects.
 > 📂 **[automate-the-boring-stuff](automate-the-boring-stuff)/** — *in-textbook work & examples: AtBS*<br>
 > 📂 **[class-assignments](class-assignments)/** — *for classwork unrelated to labs or textbook work*<br>
+>   - 🐍 [`pm.py`](class-assignments/pm.py) — *Practice Midterm*
+>
 > 📂 **[labs](labs)/** — *weekly lab assignments for submission*<br>
 > - 📁 [`02`](labs/02)/
 >   - 🐍 [`p1.py`](labs/02/p1.py) — *Part 1: Variables and Operators*
