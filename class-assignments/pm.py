@@ -4,7 +4,7 @@
 #
 # python version 3.14.6
 # created 7/9/26 - foxes
-# modified 7/9/26 - foxes
+# modified 7/12/26 - foxes
 #
 # description: Python-based application to help customers select toppings for their tacos
 
@@ -24,8 +24,8 @@ class CustomerOrder :
             
             done_flag = False
 
-            # In my architecture, I felt a for loop made more sense than the while loop asked in the instructions, since max_selections is constant per MenuItem. 
-            # If I were to implement a while loop, I would check an incremented index value against option.max_selections.
+            # In my architecture, I felt a for loop made more sense than the while loop asked in the instructions, since max_selections is constant per MenuItem, and would be more legible since it wouldn't need a separately instanced incremental variable.
+            # If I were to implement a while loop, I would check an incremented variable against option.max_selections.
             for index in range(option.max_selections) :
 
                 # used to break loop if user does not want to select the maximum number of options allowed by MenuItem's max_selections
@@ -119,7 +119,7 @@ MAX_DIP = 2
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
 # list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. 
-# I added a couple additional options to show the scalability of my code.
+# i added a couple additional options to show the scalability of my code.
 menu_options = [
     MenuItem("tortilla", 
              1, 
