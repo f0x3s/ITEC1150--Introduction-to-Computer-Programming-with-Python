@@ -14,6 +14,7 @@ class CustomerOrder :
         self.order = {}
     
     # takes list of MenuItem objects as 'options'
+    # if the code was any more complex, i would separate the ui from this method and just use it to handle assevbling the order dict.
     def build_order(self, options) :
         order = {}
 
