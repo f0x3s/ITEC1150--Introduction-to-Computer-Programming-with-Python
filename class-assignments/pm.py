@@ -13,22 +13,28 @@ class CustomerOrder :
         self.name = name 
         self.order = {}
     
+    # takes list of MenuItem objects as 'options'
     def build_order(self, options) :
         order = {}
 
         for option in options:
-    
+            
+            # creates key in order dict for MenuItem object with an empty list as its value
             order[option.name] = []
-
+            
             done_flag = False
 
             for index in range(option.max_selections) :
+
+                # used to break loop if user does not want to select the maximum number of options allowed by MenuItem's max_selections
                 if done_flag :
                     break
             
+                # for ux; displays 'select your <>' vs 'select your n-th <>' contextually
                 str_index = "" if option.max_selections == 1 else  human_number(index) + " "
-
                 print(f"\nSelect your {str_index}{option.name} (1-{option.count_options()}):") 
+
+                # print options
                 option.display()
 
                 while True :
@@ -36,13 +42,16 @@ class CustomerOrder :
                     try :
                         user_input = int(user_input)
 
+                        # exit loop if no more selections allowed by MenuItem's max_selections
                         if(option.is_done(user_input)):
                                 done_flag = True
                                 break
                         
+                        # convert integer to named option.
                         user_input = option.get_choice(user_input)
 
-                        order[option.name].append(user_input )
+                        # append named option to the value list associated with current MenuItem's key in the orders dict.
+                        order[option.name].append(user_input)
                         break
                 
                     except ValueError :
@@ -50,13 +59,16 @@ class CustomerOrder :
         
         self.order = order
 
+    # handles final human-readable output
     def display_order(self) :
         print(f"{self.name} :")
 
         for key, choices in self.order.items() :
-
+            
+            # Name of menu item
             print(f"\t{key.capitalize()}: ", end="")
 
+            # stored user choices
             selections = ", ".join(choices) if choices else "None"
             print(selections)
 
@@ -64,36 +76,43 @@ class CustomerOrder :
                 print("\t\tOne Spicy Taco coming up!")
 
 class MenuItem :
-    def __init__(self, name, max_selections, items) :
+    def __init__(self, name, max_selections, choices) :
         self.name = name
         self.max_selections = max_selections
-        self.items = items
+        self.choices = choices
 
     def display(self) :
-        for index, choice in enumerate(self.items) :
+        for index, choice in enumerate(self.choices) :
             print(f"{index + 1}. {choice}")
 
         if self.max_selections > 1 :
-            print(f"{len(self.items) + 1}. Done (no more {self.name})")
+            print(f"{len(self.choices) + 1}. Done (no more {self.name})")
     
     def count_options(self) :
-        count = len(self.items) 
+        count = len(self.choices) 
 
         return count + 1 if self.max_selections > 1 else count
     
+    # used to check to see if user has exceeded MenuItem's max_selections
     def is_done(self, selection) :
+
         num_options = self.count_options()
 
         if selection > num_options or selection < 1 :
             raise ValueError("selection not in bounds")
-
+        
+        # true 
         return self.max_selections > 1 and selection == num_options
     
+    # convert selection integer to named option from choices list
     def get_choice(self, selection) :
-        if selection < 1 or selection > len(self.items) :
+
+        num_options = self.count_options()
+
+        if selection > num_options or selection < 1 :
             raise ValueError("selection not in bounds")
         
-        return self.items[selection - 1]
+        return self.choices[selection - 1]
     
 party_count = 0
 
@@ -102,7 +121,7 @@ MAX_DIP = 2
 
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
-# list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. I added a couple addition options to show the easy scaleability of my code.
+# list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. I added a couple additional options to show the scaleability of my code.
 menu_options = [
     MenuItem("tortilla", 
              1, 
@@ -144,7 +163,7 @@ def sanitize_party_count(count, maximum) :
 
 print("Welcome to Catrinas Mexican Grill")
 print("Get ready to build your taco(s)...")
-max_guests = len(HUMAN_NUMBERS) # a little cheesy, but guest # limited by number of human-readable numerical strings in HUMAN_NUMBERS. I'm sure there is a module that could handle the conversion better. ^.^
+max_guests = len(HUMAN_NUMBERS) # a little cheesy, but guest # limited by number of human-readable numerical strings in HUMAN_NUMBERS. I'm sure there is a module that could handle the conversion better ^.^
 
 print(f"\nHow many are in your party? (maximum {max_guests} guests): ")
 
