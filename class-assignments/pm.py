@@ -74,7 +74,7 @@ class MenuItem :
             print(f"{index + 1}. {choice}")
 
         if self.max_selections > 1 :
-            print(f"{len(self.items) + 1}. Done (no more {self.name}s)")
+            print(f"{len(self.items) + 1}. Done (no more {self.name})")
     
     def count_options(self) :
         count = len(self.items) 
@@ -102,6 +102,7 @@ MAX_DIP = 2
 
 HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
 
+# list of MenuItem(<name>, <max qty>, [<choices>]) objects representing orderable menu items. I added a couple addition options to show the easy scaleability of my code.
 menu_options = [
     MenuItem("tortilla", 
              1, 
@@ -128,25 +129,27 @@ menu_options = [
              ["Mexican Coke", "Jarritos", "Water", "Horchata"])
 ]
 
+# function to convert integer to string: 1 == "first", 2 == "second", etc using HUMAN_NUMBERS list
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
+# make sure party count is between one and some maximum number of people, othewise throwing a ValueError to function within a looped try/except block.
 def sanitize_party_count(count, maximum) :
     count = int(count)
-    
+
     if count < 1 or count > maximum:
         raise ValueError("selection not in bounds")
         
     return count
 
-
-
 print("Welcome to Catrinas Mexican Grill")
 print("Get ready to build your taco(s)...")
-max_guests = len(HUMAN_NUMBERS)
+max_guests = len(HUMAN_NUMBERS) # a little cheesy, but guest # limited by number of human-readable numerical strings in HUMAN_NUMBERS. I'm sure there is a module that could handle the conversion better. ^.^
 
 print(f"\nHow many are in your party? (maximum {max_guests} guests): ")
 
+# prompts user for # of guests in party (repeatedly, if necessary, until acceptable response given. sanitize_party_count() throws a valueError for unacceptable input, triggering the except block before the break statement).
+# is there a more recommended way to approach this re: readability/best practices?
 while True :
     try :
         party_count = sanitize_party_count(input(),max_guests)
@@ -154,17 +157,24 @@ while True :
     except ValueError :
         print(f"Expecting an integer between 1 and {max_guests}:")
 
+# list for customer objects containing orders
 party_orders = []
 
 for individual in range(party_count):
 
-    party_index = "W" if party_count == 1 else human_number(individual).capitalize() + " party member, w"
+    if party_count == 1 :
+        print(f"\nWhat is your name?: ")
+    else : 
+        print(f"\n{human_number(individual).capitalize()} party member, what is your name?: ") # output: First party member, what is your name?
 
-    print(f"\n{party_index}hat is your name?: ")
     name = input()
 
     customer = CustomerOrder(name)
+
+    # prompt each customer one by one for their order
     customer.build_order(menu_options)
+
+    # store orders (contained within each customer object) in the party_orders list
     party_orders.append(customer)
 
 print("\nOrder complete!\n")
