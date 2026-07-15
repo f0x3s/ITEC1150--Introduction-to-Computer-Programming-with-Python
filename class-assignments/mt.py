@@ -14,6 +14,12 @@ class Customer :
         self.name = name
         self.items = []
 
+    def add_burger(self, burger) :
+        self.items.append(burger)
+
+    def generate_receipt(self) :
+        pass
+
 class Toppings :
     def __init__ (self) :
         self.selected_toppings = {}
@@ -39,6 +45,7 @@ class Toppings :
         self.selected_toppings[validated_topping[0]] = validated_topping[1]
 
         return validated_topping[0]
+    
 
 class Burger(Toppings) :
     def __init__(self, identifier):
@@ -260,9 +267,10 @@ for individual in range(party_count) :
                 if selected.lower() == "done" :
                     break
 
-                print("Added " + burger.add_topping_to_selected(selected))
+                print("Added {burger.add_topping_to_selected(selected)}\n")
             
             except Exception as e:
                 print(e)
         
-
+        customer.add_burger(burger)
+        
