@@ -52,27 +52,33 @@ TOPPINGS = {
         }
     }
 
+# check if object is integer
 def is_integer(value) :
     return isinstance(value, int)
 
+# format key and value pair as item and price in dollars, offset by some number of spaces
 def format_price(item, cents, adj) :
     human_price = int(cents)/100
     extra_spaces = " " * adj
     return extra_spaces + item + ": " + f"${human_price:.2f}"
 
-def maximum_length(text ) :
+# iterates over dict object recursively to find all key & value pairs where the value is an integer
+# determines maximum length out of all key and value pairs after they have been formatted as item and price in dollars, with no offset spaces
+def maximum_length(text) :
     max_length = 0
 
     for key, value in text.items() :
 
         for key, value in text.items() :
+            
             if is_integer(value) :
+                # lowest level reached
                 current_length = len(format_price(key, value, 0))
 
             else : 
-
+                # not at lowest level, recurse with sub-dict
                 current_length = maximum_length(value)
-        
+
             if current_length > max_length :
                 max_length = current_length
 
