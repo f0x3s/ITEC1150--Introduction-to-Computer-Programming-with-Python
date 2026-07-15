@@ -13,12 +13,17 @@ class Customer :
     def __init__(self, name):
         self.name = name
         self.items = []
+        self.receipt = {}
 
     def add_burger(self, burger) :
         self.items.append(burger)
 
     def generate_receipt(self) :
-        pass
+
+        for items in self.items :
+            self.receipt[items.name] = items
+
+        print(calculate_toppings_display_string(self.receipt))
 
 class Toppings :
     def __init__ (self) :
@@ -273,4 +278,8 @@ for individual in range(party_count) :
                 print(e)
         
         customer.add_burger(burger)
-        
+    
+    party.append(customer)
+
+for individual in party :
+    print(individual.generate_receipt())
