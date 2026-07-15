@@ -70,7 +70,7 @@ def maximum_length(text) :
     for key, value in text.items() :
 
         for key, value in text.items() :
-            
+
             if is_integer(value) :
                 # lowest level reached
                 current_length = len(format_price(key, value, 0))
@@ -88,7 +88,7 @@ def maximum_length(text) :
 def calculate_str_adj(maximum, text) :
     return abs(maximum - len(text))
 
-def display_topping_selection(options, layer, longest) :
+def calculate_topping_selection_string(options, layer, longest, out_string) :
 
     # check for first iteration
     if layer == 0:
@@ -108,15 +108,18 @@ def display_topping_selection(options, layer, longest) :
             adj_spaces = calculate_str_adj(longest, test_str)
 
             # add adjustemnt to formatted item and price & print
-            print(f"{spacing}{format_price(key, value, adj_spaces)}")
+            out_string += f"{spacing}{format_price(key, value, adj_spaces)}\n"
+
             
         else :
 
             # not at lowest level, just print key with proper indentation
-            print(f"{spacing}{key}: ")
+            out_string += f"{spacing}{key}: \n"
 
             # recurse with sub-dict
-            display_topping_selection(value, layer + 1, longest)
+            out_string = calculate_topping_selection_string(value, layer + 1, longest, out_string)
+    
+    return out_string
 
 
 
@@ -135,4 +138,4 @@ STYLES = {
 }
 
 print("Welcome to Burgers to Go!")
-display_topping_selection(TOPPINGS, 0, None)
+print(calculate_topping_selection_string(TOPPINGS, 0, None, ""))
