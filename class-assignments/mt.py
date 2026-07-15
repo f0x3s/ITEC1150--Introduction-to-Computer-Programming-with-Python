@@ -59,31 +59,41 @@ def format_price(item, cents, adj) :
     extra_spaces = " " * adj
     return item + ": " + extra_spaces + f"${human_price:.2f}"
 
-def maximum_length(text) :
+def maximum_length(text ) :
     max_length = 0
 
     for key, value in text.items() :
-        current_length = len(format_price(key, value, 0))
 
-        if current_length > max_length :
-            max_length = current_length
+        
+        for key, value in text.items() :
+            if is_integer(value) :
+                current_length = len(format_price(key, value, 0))
+
+            else : 
+                current_length = maximum_length(value)
+        
+            if current_length > max_length :
+                max_length = current_length
 
     return max_length
 
 def calculate_str_adj(maximum, text) :
     return maximum - len(text)
 
-
 def display_toppings(options, layer) :
 
+    longest = 0
+
+
+    longest = maximum_length(options)
+  
+            
     for key, value in options.items() :
         spacing = "  " * layer
 
         if is_integer(value) :
             
             test_str = format_price(key, value, 0)
-
-            longest = maximum_length(options)
 
             adj_spaces = calculate_str_adj(longest, test_str)
 
