@@ -88,7 +88,7 @@ def maximum_length(text) :
 def calculate_str_adj(maximum, text) :
     return abs(maximum - len(text))
 
-def calculate_topping_selection_string(options, layer, longest, out_string) :
+def display_toppings(options, layer, longest, out_string) :
 
     # check for first iteration
     if layer == 0:
@@ -117,7 +117,7 @@ def calculate_topping_selection_string(options, layer, longest, out_string) :
             out_string += f"{spacing}{key}: \n"
 
             # recurse with sub-dict
-            out_string = calculate_topping_selection_string(value, layer + 1, longest, out_string)
+            out_string = display_toppings(value, layer + 1, longest, out_string)
     
     return out_string
 
@@ -138,4 +138,4 @@ STYLES = {
 }
 
 print("Welcome to Burgers to Go!")
-print(calculate_topping_selection_string(TOPPINGS, 0, None, ""))
+print(display_toppings(TOPPINGS, 0, None, ""))
