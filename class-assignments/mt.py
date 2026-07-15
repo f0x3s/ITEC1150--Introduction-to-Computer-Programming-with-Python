@@ -7,16 +7,22 @@
 # modified 7/14/26 - foxes
 #
 # description: Python-based application to help BTG customers order burgers.
+import math
 
 class Customer :
-    def __init__(self):
-        pass
+    def __init__(self, name):
+        self.name = name
+        self.items = []
 
 class Toppings :
     def __init__ (self, toppings) :
         self.toppings = toppings
         self.selected_toppings = {}
+        self.menu = TOPPINGS_OPTIONS
     
+    def display_menu(self) :
+        print(calculate_toppings_display_string(self.menu))
+
     def display_toppings(self) :
         print(calculate_toppings_display_string(self.toppings))
 
@@ -24,13 +30,21 @@ class Toppings :
         pass
 
 class Burger(Toppings) :
-    def __init__(self, identifier, toppings):
-        super().__init__(toppings)
+    def __init__(self, identifier):
+        super().__init__({})
         self.identifier = identifier
         self.name = None
     
     def check_for_name(self) :
         pass
+
+    def calculate_subtotal(self) :
+        pass
+
+HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
+
+def human_number(number) :
+    return HUMAN_NUMBERS[number]
 
 # for this assignment, I wanted to practice recursion, so I made a nested dict to parse.
 TOPPINGS_OPTIONS = {
@@ -62,7 +76,7 @@ TOPPINGS_OPTIONS = {
 
 # check if object is integer
 def is_integer(value) :
-    return isinstance(value, int)
+    return int(value) if isinstance(value, int) else False
 
 # format key and value pair as item and price in dollars, offset by some number of spaces
 def format_price(item, cents, adj) :
@@ -126,6 +140,24 @@ def calculate_toppings_display_string(options, layer=0, longest=0, out_string=""
     
     return out_string
 
+def validate_customer_input_integer(test) :
+    try : 
+        test = int(test)
+        if test < 1 :
+            raise ValueError('Number cannot be less than 0') 
+        
+        return test
+
+    except :
+        return False
+
+def center_text(text, reference) :
+    reference_width = maximum_length(reference)
+
+    calculate_str_adj(reference_width, text)
+
+    return " " * math.ceil((calculate_str_adj(reference_width, text)/2) + 1) + text
+
 # I wanted to practice string operations, so I added an additional program element
 # As a promotional easter egg, creating a named burger applies a slight discount
 # Encouraging customers to explore the Menu
@@ -141,4 +173,52 @@ STYLES = {
 menu_toppings = Toppings(TOPPINGS_OPTIONS)
 
 print("Welcome to Burgers to Go!")
-print(menu_toppings.display_toppings())
+
+
+while(True) :
+    print("How many in your party?: ")
+    party_count = validate_customer_input_integer(input())
+    if party_count :
+        break
+
+    else :
+        print("Error: Expected an integer of at least 1")
+
+party = []
+
+for individual in range(party_count) :
+
+    if party_count == 1 :
+        print(f"\nWhat is your name?: ")
+    else : 
+        print(f"\n{human_number(individual).capitalize()} party member, what is your name?: ") # output: First party member, what is your name?
+
+    name = input()
+
+    customer = Customer(name)
+
+    while(True) :
+
+        print("\nHow many Burgers would you like?: ")
+        burger_count = validate_customer_input_integer(input())
+
+        if burger_count :
+            break
+
+        else :
+            print("\nError: Expected an integer of at least 1")
+
+    for item in range(burger_count) :
+        if burger_count == 1 :
+            print(f"\nLet's build your burger!")
+        else : 
+            print(f"\nLet's build your {human_number(item)} burger!")
+
+        print("You will be prompted for each topping selection individually.\n")
+
+        burger = Burger(f"Burger {item}")
+
+        print(center_text("MENU", burger.menu))
+
+        burger.display_menu()
+        print("Select Topping (Please enter the name of your selection): ")
