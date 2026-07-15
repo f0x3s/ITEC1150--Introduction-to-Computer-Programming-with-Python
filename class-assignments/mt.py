@@ -25,14 +25,14 @@ class Burger :
         pass
 
 TOPPINGS = {
-    "Classic" : {
+    "Classic Toppings" : {
         "Lettuce" : 50,
         "Tomatoes" : 50,
         "Pickles" : 75,
         "Raw onions" : 100
         },
 
-    "Gourmet" : {
+    "Gourmet Toppings" : {
         "Bacon" : 250,
         "Grilled Onions" : 200,
         "Green peppers" : 150,
@@ -54,21 +54,45 @@ TOPPINGS = {
 def is_integer(value) :
     return isinstance(value, int)
 
+def format_price(item, cents, adj) :
+    human_price = int(cents)/100
+    extra_spaces = " " * adj
+    return item + ": " + extra_spaces + f"${human_price:.2f}"
+
+def maximum_length(text) :
+    max_length = 0
+
+    for key, value in text.items() :
+        current_length = len(format_price(key, value, 0))
+
+        if current_length > max_length :
+            max_length = current_length
+
+    return max_length
+
+def calculate_str_adj(maximum, text) :
+    return maximum - len(text)
+
+
 def display_toppings(options, layer) :
 
     for key, value in options.items() :
-        tabs = "\t" * layer
+        spacing = "  " * layer
 
         if is_integer(value) :
-            human_price = int(value)/100
+            
+            test_str = format_price(key, value, 0)
 
-            print(f"{tabs}{key}:", end = "")
-            print("$%.2f" % human_price)
+            longest = maximum_length(options)
+
+            adj_spaces = calculate_str_adj(longest, test_str)
+
+            print(f"{spacing}{format_price(key, value, adj_spaces)}")
             # track recursion level
             
         else :
             # track recursion level
-            print(f"{tabs}{key}:", end = "\n")
+            print(f"{spacing}{key}: ")
             display_toppings(value, layer + 1)
 
 
