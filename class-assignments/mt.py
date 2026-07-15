@@ -65,13 +65,11 @@ def display_toppings(options, layer) :
             print(f"{tabs}{key}:", end = "")
             print("$%.2f" % human_price)
             # track recursion level
-            layer == 0
             
         else :
             # track recursion level
-            layer += 1
             print(f"{tabs}{key}:", end = "\n")
-            display_toppings(value, layer)
+            display_toppings(value, layer + 1)
 
 
 
