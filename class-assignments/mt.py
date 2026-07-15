@@ -69,18 +69,16 @@ def maximum_length(text) :
 
     for key, value in text.items() :
 
-        for key, value in text.items() :
+        if is_integer(value) :
+            # lowest level reached
+            current_length = len(format_price(key, value, 0))
 
-            if is_integer(value) :
-                # lowest level reached
-                current_length = len(format_price(key, value, 0))
+        else : 
+            # not at lowest level, recurse with sub-dict
+            current_length = maximum_length(value)
 
-            else : 
-                # not at lowest level, recurse with sub-dict
-                current_length = maximum_length(value)
-
-            if current_length > max_length :
-                max_length = current_length
+        if current_length > max_length :
+            max_length = current_length
 
     return max_length
 
@@ -88,7 +86,7 @@ def maximum_length(text) :
 def calculate_str_adj(maximum, text) :
     return abs(maximum - len(text))
 
-def display_toppings(options, layer, longest, out_string) :
+def display_toppings(options, layer=0, longest=0, out_string="") :
 
     # check for first iteration
     if layer == 0:
@@ -138,4 +136,4 @@ STYLES = {
 }
 
 print("Welcome to Burgers to Go!")
-print(display_toppings(TOPPINGS, 0, None, ""))
+print(display_toppings(TOPPINGS))
