@@ -24,6 +24,7 @@ class Burger :
     def check_for_name(self) :
         pass
 
+# for this assignment, I wanted to practice recursion, so I made a nested dict to parse.
 TOPPINGS = {
     "Classic Toppings" : {
         "Lettuce" : 50,
@@ -57,19 +58,19 @@ def is_integer(value) :
 def format_price(item, cents, adj) :
     human_price = int(cents)/100
     extra_spaces = " " * adj
-    return item + ": " + extra_spaces + f"${human_price:.2f}"
+    return extra_spaces + item + ": " + f"${human_price:.2f}"
 
 def maximum_length(text ) :
     max_length = 0
 
     for key, value in text.items() :
 
-        
         for key, value in text.items() :
             if is_integer(value) :
                 current_length = len(format_price(key, value, 0))
 
             else : 
+
                 current_length = maximum_length(value)
         
             if current_length > max_length :
@@ -77,33 +78,39 @@ def maximum_length(text ) :
 
     return max_length
 
+# compares length of two strings and returns the difference.
 def calculate_str_adj(maximum, text) :
-    return maximum - len(text)
+    return abs(maximum - len(text))
 
-def display_toppings(options, layer) :
+def display_topping_selection(options, layer, longest) :
 
-    longest = 0
-
-
-    longest = maximum_length(options)
-  
+    # check for first iteration
+    if layer == 0:
+        # if first iteration (header), calculate longest formatted item & price
+        longest = maximum_length(options)
             
     for key, value in options.items() :
+
+        # adjustment to indent levels
         spacing = "  " * layer
-
+        
+        # check if lowest level reached
         if is_integer(value) :
-            
+    
+            # compare length of formatted item and price to maximum lenght of all formatted items and prices to caclulate adjustment
             test_str = format_price(key, value, 0)
-
             adj_spaces = calculate_str_adj(longest, test_str)
 
+            # add adjustemnt to formatted item and price & print
             print(f"{spacing}{format_price(key, value, adj_spaces)}")
-            # track recursion level
             
         else :
-            # track recursion level
+
+            # not at lowest level, just print key with proper indentation
             print(f"{spacing}{key}: ")
-            display_toppings(value, layer + 1)
+
+            # recurse with sub-dict
+            display_topping_selection(value, layer + 1, longest)
 
 
 
@@ -122,4 +129,4 @@ STYLES = {
 }
 
 print("Welcome to Burgers to Go!")
-display_toppings(TOPPINGS, 0)
+display_topping_selection(TOPPINGS, 0, None)
