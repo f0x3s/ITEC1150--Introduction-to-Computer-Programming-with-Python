@@ -15,8 +15,7 @@ class Customer :
         self.items = []
 
 class Toppings :
-    def __init__ (self, toppings) :
-        self.toppings = toppings
+    def __init__ (self) :
         self.selected_toppings = {}
         self.menu = TOPPINGS_OPTIONS
     
@@ -24,14 +23,26 @@ class Toppings :
         print(calculate_toppings_display_string(self.menu))
 
     def display_toppings(self) :
-        print(calculate_toppings_display_string(self.toppings))
+        print(calculate_toppings_display_string(self.selected_toppings))
 
-    def add_topping_to_selected(self) :
-        pass
+    def add_topping_to_selected(self, user_topping) :
+
+        validated_topping = validate_customer_input_string(user_topping, self.menu)
+
+        if validated_topping is None :
+            raise ValueError(f"We dont have {user_topping}, have you spelled it correctly?")
+
+        if validated_topping[0] in self.selected_toppings.keys() :
+            raise ValueError(f"You have already added {validated_topping[0]}")
+
+        
+        self.selected_toppings[validated_topping[0]] = validated_topping[1]
+
+        return validated_topping[0]
 
 class Burger(Toppings) :
     def __init__(self, identifier):
-        super().__init__({})
+        super().__init__()
         self.identifier = identifier
         self.name = None
     
@@ -52,23 +63,23 @@ TOPPINGS_OPTIONS = {
         "Lettuce" : 50,
         "Tomatoes" : 50,
         "Pickles" : 75,
-        "Raw onions" : 100
+        "Raw Onions" : 100
         },
 
     "Gourmet Toppings" : {
         "Bacon" : 250,
         "Grilled Onions" : 200,
-        "Green peppers" : 150,
-        "Jalapeños" : 180,
+        "Green Peppers" : 150,
+        "Jalapenos" : 180,
         "Mushrooms" : 180,
         },
 
     "Sauces" : {
-        "Mayonnaise" : 25,
+        "Mayo" : 25,
         "Ketchup" : 25,
         "Mustard" : 25,
         "Sweet and Sour Relish" : 75,
-        "BBQ sauce" : 25,
+        "BBQ Sauce" : 100,
         "A1 Original Steak Sauce" : 75,
         "Frank's Original Hot Sauce" : 80,
         }
@@ -120,6 +131,7 @@ def calculate_toppings_display_string(options, layer=0, longest=0, out_string=""
         # adjustment to indent levels
         spacing = "  " * layer
 
+        
         # check if lowest level reached
         if is_integer(value) :
     
@@ -138,6 +150,7 @@ def calculate_toppings_display_string(options, layer=0, longest=0, out_string=""
             # recurse with sub-dict
             out_string = calculate_toppings_display_string(value, layer + 1, longest, out_string)
     
+    
     return out_string
 
 def validate_customer_input_integer(test) :
@@ -151,7 +164,25 @@ def validate_customer_input_integer(test) :
     except :
         return False
 
+def validate_customer_input_string(test, library) :
+
+    try :
+        return test, library[test]
+    
+    except :
+
+        for value in library.values() :
+
+            if isinstance(value, dict) :
+                result = validate_customer_input_string(test, value)
+                
+                if result is not None :
+                    return result
+
+    return None
+
 def center_text(text, reference) :
+
     reference_width = maximum_length(reference)
 
     calculate_str_adj(reference_width, text)
@@ -166,14 +197,11 @@ STYLES = {
     "Bacon & BBQ" : ["BBQ sauce", "Bacon", "Grilled onions", "Lettuce" ],
     "All the Way" : ["Grilled Onions", "Mushrooms", "Lettuce", "Pickles", "Tomatoes", "Mustard", "Mayo", "Ketchup"],
     "Veggies" : ["Lettuce", "Tomatoes", "Green Peppers", "Raw Onions", "Pickles", "Ketchup"],
-    "Spicy" : ["Cheese", "Jalapeños", "Frank's Original Hot Sauce", "Tomatoes", "Mayonnaise"],
+    "Spicy" : ["Cheese", "Jalapenos", "Frank's Original Hot Sauce", "Tomatoes", "Mayonnaise"],
     "Briny Bite" : ["pickles", "Sweet and Sour Relish", "Mustard", "Raw Onions"]
 }
 
-menu_toppings = Toppings(TOPPINGS_OPTIONS)
-
 print("Welcome to Burgers to Go!")
-
 
 while(True) :
     print("How many in your party?: ")
@@ -209,16 +237,32 @@ for individual in range(party_count) :
             print("\nError: Expected an integer of at least 1")
 
     for item in range(burger_count) :
+
         if burger_count == 1 :
             print(f"\nLet's build your burger!")
+
         else : 
             print(f"\nLet's build your {human_number(item)} burger!")
 
         print("You will be prompted for each topping selection individually.\n")
 
-        burger = Burger(f"Burger {item}")
+        burger = Burger(f"Burger {item + 1}")
 
         print(center_text("MENU", burger.menu))
 
         burger.display_menu()
-        print("Select Topping (Please enter the name of your selection): ")
+
+        while True :
+            print("Select Topping (Please enter the name of your selection) or type 'Done': ")
+            try :
+                selected = input()
+
+                if selected.lower() == "done" :
+                    break
+
+                print("Added " + burger.add_topping_to_selected(selected))
+            
+            except Exception as e:
+                print(e)
+        
+
