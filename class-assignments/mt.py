@@ -12,20 +12,28 @@ class Customer :
     def __init__(self):
         pass
 
-class Burger :
-    def __init__(self):
-        self.toppings = []
-        self.name = None
+class Toppings :
+    def __init__ (self, toppings) :
+        self.toppings = toppings
+        self.selected_toppings = {}
+    
+    def display_toppings(self) :
+        print(calculate_toppings_display_string(self.toppings))
+
+    def add_topping_to_selected(self) :
         pass
 
-    def add_topping(self, topping) :
-        self.toppings.append(topping)
-
+class Burger(Toppings) :
+    def __init__(self, identifier, toppings):
+        super().__init__(toppings)
+        self.identifier = identifier
+        self.name = None
+    
     def check_for_name(self) :
         pass
 
 # for this assignment, I wanted to practice recursion, so I made a nested dict to parse.
-TOPPINGS = {
+TOPPINGS_OPTIONS = {
     "Classic Toppings" : {
         "Lettuce" : 50,
         "Tomatoes" : 50,
@@ -86,18 +94,18 @@ def maximum_length(text) :
 def calculate_str_adj(maximum, text) :
     return abs(maximum - len(text))
 
-def display_toppings(options, layer=0, longest=0, out_string="") :
+def calculate_toppings_display_string(options, layer=0, longest=0, out_string="") :
 
     # check for first iteration
     if layer == 0:
         # if first iteration (header), calculate longest formatted item & price
         longest = maximum_length(options)
-            
+
     for key, value in options.items() :
 
         # adjustment to indent levels
         spacing = "  " * layer
-        
+
         # check if lowest level reached
         if is_integer(value) :
     
@@ -108,20 +116,15 @@ def display_toppings(options, layer=0, longest=0, out_string="") :
             # add adjustemnt to formatted item and price & print
             out_string += f"{spacing}{format_price(key, value, adj_spaces)}\n"
 
-            
         else :
 
             # not at lowest level, just print key with proper indentation
             out_string += f"{spacing}{key}: \n"
 
             # recurse with sub-dict
-            out_string = display_toppings(value, layer + 1, longest, out_string)
+            out_string = calculate_toppings_display_string(value, layer + 1, longest, out_string)
     
     return out_string
-
-
-
-
 
 # I wanted to practice string operations, so I added an additional program element
 # As a promotional easter egg, creating a named burger applies a slight discount
@@ -135,5 +138,7 @@ STYLES = {
     "Briny Bite" : ["pickles", "Sweet and Sour Relish", "Mustard", "Raw Onions"]
 }
 
+menu_toppings = Toppings(TOPPINGS_OPTIONS)
+
 print("Welcome to Burgers to Go!")
-print(display_toppings(TOPPINGS))
+print(menu_toppings.display_toppings())
