@@ -32,12 +32,31 @@ class Menu() :
 class Burger:
     BASE_PRICE_CENTS = 1030
 
-    def __init__(self):
-        self.toppings = []
+    def __init__(self, menu):
+        self.toppings = {}
+        self.menu = menu
+
+    def add_topping_to_selected(self, user_topping) :
+
+        validated_topping = validate_customer_input_string(user_topping, self.menu)
+
+        if validated_topping is None :
+            raise ValueError(f"We dont have {user_topping}, have you spelled it correctly?")
+
+        if validated_topping.name in self.toppings.keys() :
+            raise ValueError(f"You have already added {validated_topping.name}")
+
+        self.toppings[validated_topping.name] = validated_topping
+
+        return validated_topping.name
 
 class Order:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.burgers = []
+    
+    def add_burger(self, burger) :
+        self.burgers.append(burger)
 
 def cents_int_to_dollars_str(cents) :
     dollars = cents/100
@@ -65,34 +84,112 @@ def center_text(text, reference) :
 
     calculate_str_adj(reference_width, text)
 
-    return " " * math.ceil((calculate_str_adj(reference_width, text)/2) + 1) + text
+    return " " * math.ceil(calculate_str_adj(reference_width, text)/2) + text
 
 # compares length of two strings and returns the difference.
 def calculate_str_adj(maximum, text) :
     return abs(len(maximum) - len(text))
 
+def validate_customer_input_integer(test) :
+    try : 
+        test = int(test)
+        if test < 1 :
+            raise ValueError('Number cannot be less than 0') 
+        
+        return test
 
+    except :
+        return False
+
+def validate_customer_input_string(test, library) :
+
+    test = test.lower()
+    
+    try :
+        return library[test]
+    
+    except :
+
+        for value in library.values() :
+  
+            if isinstance(value, dict) :
+                result = validate_customer_input_string(test, value)
+                
+                if result is not None :
+                    return result
+
+    return None
+
+HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
+
+def human_number(number) :
+    return HUMAN_NUMBERS[number]
 MENU = {
-        "Lettuce" : Topping("Lettuce", 50),
-        "Tomatoes" : Topping("Tomatoes", 50),
-        "Pickles" : Topping("Pickles", 75),
-        "Raw Onions" : Topping("Raw Onions", 100),
+        "lettuce" : Topping("Lettuce", 50),
+        "tomatoes" : Topping("Tomatoes", 50),
+        "pickles" : Topping("Pickles", 75),
+        "raw onions" : Topping("Raw Onions", 100),
 
-        "Bacon" : Topping("Bacon", 250),
-        "Grilled Onions" : Topping("Grilled Onions", 200),
-        "Green Peppers" : Topping("Green Peppers", 150),
-        "Jalapenos" : Topping("Jalapenos", 180),
-        "Mushrooms" : Topping("Mushrooms", 180),
+        "bacon" : Topping("Bacon", 250),
+        "grilled onions" : Topping("Grilled Onions", 200),
+        "green peppers" : Topping("Green Peppers", 150),
+        "jalapenos" : Topping("Jalapenos", 180),
+        "mushrooms" : Topping("Mushrooms", 180),
 
-        "Mayo" : Topping("Mayo", 25),
-        "Ketchup" : Topping("Ketchup", 25),
-        "Mustard" : Topping("Mustard", 25),
-        "Sweet and Sour Relish" : Topping("Sweet and Sour Relish", 75),
-        "BBQ Sauce" : Topping("BBQ Sauce", 100),
-        "A1 Original Steak Sauce" : Topping("A1 Original Steak Sauce", 75),
-        "Zoey's Original Hot Sauce" : Topping("Zoey's Original Hot Sauce", 80)
+        "mayo" : Topping("Mayo", 25),
+        "ketchup" : Topping("Ketchup", 25),
+        "mustard" : Topping("Mustard", 25),
+        "Sweet and sour relish" : Topping("Sweet and Sour Relish", 75),
+        "bbq sauce" : Topping("BBQ Sauce", 100),
+        "a1 original steak sauce" : Topping("A1 Original Steak Sauce", 75),
+        "zoey's original hot sauce" : Topping("Zoey's Original Hot Sauce", 80)
     }
 
 menu = Menu(MENU)
 
-print(menu)
+print("Welcome to Burgers to Go!")
+
+print(f"\nWhat is your name?: ")
+
+customer = Order(input())
+
+while(True) :
+
+    print("\nHow many Burgers would you like?: ")
+    burger_count = validate_customer_input_integer(input())
+
+    if burger_count :
+        break
+
+    else :
+        print("\nError: Expected an integer of at least 1")
+
+for item in range(burger_count) :
+
+    if burger_count == 1 :
+        print(f"\nLet's build your burger!")
+
+    else : 
+        print(f"\nLet's build your {human_number(item)} burger!")
+
+    print("You will be prompted for each topping selection individually.\n")
+
+    burger = Burger(menu.toppings)
+
+    print(menu)
+
+    while True :
+        print("Select Topping (Please enter the name of your selection) or type 'Done': ")
+        try :
+            selected = input()
+
+            if selected.lower() == "done" :
+                break
+
+            print(f"Added {burger.add_topping_to_selected(selected)}\n")
+        
+        except Exception as e:
+            print(e)
+    
+    customer.add_burger(burger)
+
