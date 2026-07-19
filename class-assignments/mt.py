@@ -20,8 +20,8 @@ class Customer :
 
     def generate_receipt(self) :
 
-        for items in self.items :
-            self.receipt[items.name] = items
+        for index in self.items :
+            self.receipt[index.identifier] = index.display_toppings()
 
         print(calculate_toppings_display_string(self.receipt))
 
@@ -34,7 +34,7 @@ class Toppings :
         print(calculate_toppings_display_string(self.menu))
 
     def display_toppings(self) :
-        print(calculate_toppings_display_string(self.selected_toppings))
+        return calculate_toppings_display_string(self.selected_toppings)
 
     def add_topping_to_selected(self, user_topping) :
 
