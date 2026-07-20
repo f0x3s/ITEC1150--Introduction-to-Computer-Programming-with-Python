@@ -1,170 +1,161 @@
-# Midterm
-# foxes
-# Instructor: Corin Dennison
-#
-# python version 3.14.6
-# created 7/14/26 - foxes
-# modified 7/14/26 - foxes
-#
-# description: Python-based application to help BTG customers order burgers.
 import math
 
-class Customer :
+WELCOME_MSG = "Welcome to Burgers to Go!"
+
+class Topping() :
+    def __init__(self, name, price_cents):
+        self.name = name 
+        self.price_cents = price_cents
+
+# when menu object called as a string, print the menu
+class Menu() :
+    def __init__(self, toppings):
+        self.toppings = toppings
+        pass
+    
+    def __str__(self):
+        
+        output_list = {}
+        output_string = ""
+
+        # menu header, dynamically centered atop menu items
+        output_string += center_text("MENU", self.toppings) + "\n"
+
+        longest_menu_str_length = longest_formatted_display_string(self.toppings)
+
+        for topping_object in self.toppings.values() :
+
+            price = cents_int_to_dollars_str(topping_object.price_cents)
+
+            # insert whitespace between each topping and its price to match longest topping & price string
+            sep = calculate_str_adj(longest_menu_str_length, topping_display_str(topping_object)) + 1
+            sep = sep * " "
+            output_string += f"{topping_object.name}{sep}{price}\n"
+
+
+        return output_string
+
+class Burger:
+    BASE_PRICE_CENTS = 1030
+
+    def __init__(self, menu):
+        self.toppings = {}
+        self.menu = menu
+
+    def add_topping_to_selected(self, user_topping):
+
+        key = user_topping.strip().lower()
+
+        # check to make sure user has selected valid topping
+        validated_topping = validate_customer_input_string(key, self.menu)
+
+        # throw exceptions if topping DNE or duplicate, so loop cna be triggered in main code prompting user again
+        if validated_topping is None:
+            raise ValueError(
+                f"We don't have {user_topping}... have you spelled it correctly?"
+            )
+
+        if key in self.toppings:
+            raise ValueError(
+                f"You have already added {validated_topping.name}"
+            )
+        
+        # add validated topping to self.toppings dict in same format as menu:  <searchable text>: <ToppingObject>
+        self.toppings[key] = validated_topping
+        # return topping name to display confirmation to user
+        return validated_topping.name
+
+
+class Order:
+
     def __init__(self, name):
         self.name = name
-        self.items = []
-        self.receipt = {}
-
-    def add_burger(self, burger) :
-        self.items.append(burger)
-
-    def generate_receipt(self) :
-
-        for index in self.items :
-            self.receipt[index.identifier] = index.display_toppings()
-
-        print(calculate_toppings_display_string(self.receipt))
-
-class Toppings :
-    def __init__ (self) :
-        self.selected_toppings = {}
-        self.menu = TOPPINGS_OPTIONS
+        self.burgers = []
     
-    def display_menu(self) :
-        print(calculate_toppings_display_string(self.menu))
+    # when each order is called as a string, return the formatted receipt
+    def __str__(self):
 
-    def display_toppings(self) :
-        return calculate_toppings_display_string(self.selected_toppings)
-
-    def add_topping_to_selected(self, user_topping) :
-
-        validated_topping = validate_customer_input_string(user_topping, self.menu)
-
-        if validated_topping is None :
-            raise ValueError(f"We dont have {user_topping}, have you spelled it correctly?")
-
-        if validated_topping[0] in self.selected_toppings.keys() :
-            raise ValueError(f"You have already added {validated_topping[0]}")
-
+        # cut off extraordinarily long names if needed
+        display_name = f"{self.name[:16]}..." if len(self.name) > 21 else f"{self.name}"
+        output_string = f"\n{display_name}: "
         
-        self.selected_toppings[validated_topping[0]] = validated_topping[1]
+        total = 0
 
-        return validated_topping[0]
+        # create section for each burger on receipt
+        for index, burger in enumerate(self.burgers):
+            base_price = burger.BASE_PRICE_CENTS 
+
+            # burger label & base cost
+            output_string += f"\nHamburger {index + 1}:   {cents_int_to_dollars_str(base_price)}\n"
+
+            
+            if not burger.toppings :
+                output_string += f"- no toppings\n"
+            
+            # formatted toppign & price line
+            for topping_object in burger.toppings.values():
+                base_price += topping_object.price_cents
+
+                # if topping name > 10 char, slice and add ... to keep reciept columns lined up.
+                # I didn't use the same approach as the menu because responsive-width receipts dont make sense here
+                topping_name = f"{topping_object.name[:7]}..." if len(topping_object.name) > 10 else f"{topping_object.name}"
+                
+                # format each topping line, ensure each topping name + whitespace before price is 13 char minumum (in this case, exactly becaus it can never exceed 10 char)
+                output_string += f"- {topping_name:<13} {cents_int_to_dollars_str(topping_object.price_cents)} \n"
+            
+            total += base_price
+            output_string += f"Subtotal:      {cents_int_to_dollars_str(base_price)}\n"
+
+        output_string += "\n---------------------\n"
+        output_string += f"Total:         {cents_int_to_dollars_str(total)}"
+
+        # entire reciept
+        return output_string
+
+    # add burger to order
+    def add_burger(self, burger) :
+        self.burgers.append(burger)
+
+# convert price in cents to string formatted as $<dollars>.<cents>
+def cents_int_to_dollars_str(cents) :
+    dollars = cents/100
+    dollars = f"${dollars:02.2f}"
+
+    return dollars
+
+# 'unit' menu display line i.e no whitespace inserted
+def topping_display_str(topping_object) :
+    return f"{topping_object.name} {cents_int_to_dollars_str(topping_object.price_cents)}"
+
+# uses above function to process each topping object in menu and determine which one is the longest
+# to use as formatting reference
+# returns longest string
+def longest_formatted_display_string(toppings) :
+    longest = ""
+
+    # check each new formatted topping string against running longest string
+    for topping_object in toppings.values() :
+        curent_str = topping_display_str(topping_object)
+        current_length = len(topping_display_str(topping_object))
+
+        longest = curent_str if current_length > len(longest) else longest
     
+    return longest
 
-class Burger(Toppings) :
-    def __init__(self, identifier):
-        super().__init__()
-        self.identifier = identifier
-        self.name = None
-    
-    def check_for_name(self) :
-        pass
+# centers text string within longest formatted string from reference, justified one char right if center impossible
+def center_text(text, reference) :
 
-    def calculate_subtotal(self) :
-        pass
+    reference_width = longest_formatted_display_string(reference)
 
-HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
+    calculate_str_adj(reference_width, text)
 
-def human_number(number) :
-    return HUMAN_NUMBERS[number]
-
-# for this assignment, I wanted to practice recursion, so I made a nested dict to parse.
-TOPPINGS_OPTIONS = {
-    "Classic Toppings" : {
-        "Lettuce" : 50,
-        "Tomatoes" : 50,
-        "Pickles" : 75,
-        "Raw Onions" : 100
-        },
-
-    "Gourmet Toppings" : {
-        "Bacon" : 250,
-        "Grilled Onions" : 200,
-        "Green Peppers" : 150,
-        "Jalapenos" : 180,
-        "Mushrooms" : 180,
-        },
-
-    "Sauces" : {
-        "Mayo" : 25,
-        "Ketchup" : 25,
-        "Mustard" : 25,
-        "Sweet and Sour Relish" : 75,
-        "BBQ Sauce" : 100,
-        "A1 Original Steak Sauce" : 75,
-        "Frank's Original Hot Sauce" : 80,
-        }
-    }
-
-# check if object is integer
-def is_integer(value) :
-    return int(value) if isinstance(value, int) else False
-
-# format key and value pair as item and price in dollars, offset by some number of spaces
-def format_price(item, cents, adj) :
-    human_price = int(cents)/100
-    extra_spaces = " " * adj
-    return extra_spaces + item + ": " + f"${human_price:.2f}"
-
-# iterates over dict object recursively to find all key & value pairs where the value is an integer
-# determines maximum length out of all key and value pairs after they have been formatted as item and price in dollars, with no offset spaces
-def maximum_length(text) :
-    max_length = 0
-
-    for key, value in text.items() :
-
-        if is_integer(value) :
-            # lowest level reached
-            current_length = len(format_price(key, value, 0))
-
-        else : 
-            # not at lowest level, recurse with sub-dict
-            current_length = maximum_length(value)
-
-        if current_length > max_length :
-            max_length = current_length
-
-    return max_length
+    return " " * math.ceil(calculate_str_adj(reference_width, text)/2) + text
 
 # compares length of two strings and returns the difference.
 def calculate_str_adj(maximum, text) :
-    return abs(maximum - len(text))
+    return abs(len(maximum) - len(text))
 
-def calculate_toppings_display_string(options, layer=0, longest=0, out_string="") :
-
-    # check for first iteration
-    if layer == 0:
-        # if first iteration (header), calculate longest formatted item & price
-        longest = maximum_length(options)
-
-    for key, value in options.items() :
-
-        # adjustment to indent levels
-        spacing = "  " * layer
-
-        
-        # check if lowest level reached
-        if is_integer(value) :
-    
-            # compare length of formatted item and price to maximum lenght of all formatted items and prices to caclulate adjustment
-            test_str = format_price(key, value, 0)
-            adj_spaces = calculate_str_adj(longest, test_str)
-
-            # add adjustemnt to formatted item and price & print
-            out_string += f"{spacing}{format_price(key, value, adj_spaces)}\n"
-
-        else :
-
-            # not at lowest level, just print key with proper indentation
-            out_string += f"{spacing}{key}: \n"
-
-            # recurse with sub-dict
-            out_string = calculate_toppings_display_string(value, layer + 1, longest, out_string)
-    
-    
-    return out_string
-
+# checks for cutomer input is integer greater than 1
 def validate_customer_input_integer(test) :
     try : 
         test = int(test)
@@ -176,67 +167,51 @@ def validate_customer_input_integer(test) :
     except :
         return False
 
-def validate_customer_input_string(test, library) :
+# checks customer input matches key in menu object 
+def validate_customer_input_string(test, menu):
+    test = test.strip().lower()
 
-    try :
-        return test, library[test]
+    return menu.get(test.strip().lower())
+
+HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
+
+# function to convert index integer to ordinal string: 0 == "first", 1 == "second", etc using HUMAN_NUMBERS list
+def human_number(number) :
+    return HUMAN_NUMBERS[number]
+
+# menu of toppings stored as a dict with lowercase values as keys and each topping object as values
+# this is done because menu keys are more natively searchable than values in objects, which would require iteration
+MENU = {
+        "lettuce" : Topping("Lettuce", 50),
+        "tomatoes" : Topping("Tomatoes", 50),
+        "pickles" : Topping("Pickles", 75),
+        "raw onions" : Topping("Raw Onions", 100),
+
+        "bacon" : Topping("Bacon", 250),
+        "grilled onions" : Topping("Grilled Onions", 200),
+        "green peppers" : Topping("Green Peppers", 150),
+        "jalapenos" : Topping("Jalapenos", 180),
+        "mushrooms" : Topping("Mushrooms", 180),
+
+        "mayo" : Topping("Mayo", 25),
+        "ketchup" : Topping("Ketchup", 25),
+        "mustard" : Topping("Mustard", 25),
+        "sweet and sour relish" : Topping("Sweet and Sour Relish", 75),
+        "bbq sauce" : Topping("BBQ Sauce", 100),
+        "a1 original steak sauce" : Topping("A1 Original Steak Sauce", 75),
+        "zoey's original hot sauce" : Topping("Zoey's Original Hot Sauce", 80)
+    }
+
+def main() :
+    menu = Menu(MENU)
     
-    except :
+    print(WELCOME_MSG)
 
-        for value in library.values() :
+    print(f"\nWhat is your name?: ")
 
-            if isinstance(value, dict) :
-                result = validate_customer_input_string(test, value)
-                
-                if result is not None :
-                    return result
+    customer = Order(input())
 
-    return None
-
-def center_text(text, reference) :
-
-    reference_width = maximum_length(reference)
-
-    calculate_str_adj(reference_width, text)
-
-    return " " * math.ceil((calculate_str_adj(reference_width, text)/2) + 1) + text
-
-# I wanted to practice string operations, so I added an additional program element
-# As a promotional easter egg, creating a named burger applies a slight discount
-# Encouraging customers to explore the Menu
-# source: https://www.tastingtable.com/2099199/five-guys-burgers-popular-picks-toppings-ranked/
-STYLES = {
-    "Bacon & BBQ" : ["BBQ sauce", "Bacon", "Grilled onions", "Lettuce" ],
-    "All the Way" : ["Grilled Onions", "Mushrooms", "Lettuce", "Pickles", "Tomatoes", "Mustard", "Mayo", "Ketchup"],
-    "Veggies" : ["Lettuce", "Tomatoes", "Green Peppers", "Raw Onions", "Pickles", "Ketchup"],
-    "Spicy" : ["Cheese", "Jalapenos", "Frank's Original Hot Sauce", "Tomatoes", "Mayonnaise"],
-    "Briny Bite" : ["pickles", "Sweet and Sour Relish", "Mustard", "Raw Onions"]
-}
-
-print("Welcome to Burgers to Go!")
-
-while(True) :
-    print("How many in your party?: ")
-    party_count = validate_customer_input_integer(input())
-    if party_count :
-        break
-
-    else :
-        print("Error: Expected an integer of at least 1")
-
-party = []
-
-for individual in range(party_count) :
-
-    if party_count == 1 :
-        print(f"\nWhat is your name?: ")
-    else : 
-        print(f"\n{human_number(individual).capitalize()} party member, what is your name?: ") # output: First party member, what is your name?
-
-    name = input()
-
-    customer = Customer(name)
-
+    # prompt user repeatedly for # of burgers until valid input
     while(True) :
 
         print("\nHow many Burgers would you like?: ")
@@ -248,6 +223,7 @@ for individual in range(party_count) :
         else :
             print("\nError: Expected an integer of at least 1")
 
+    # for each requested burger
     for item in range(burger_count) :
 
         if burger_count == 1 :
@@ -258,12 +234,13 @@ for individual in range(party_count) :
 
         print("You will be prompted for each topping selection individually.\n")
 
-        burger = Burger(f"Burger {item + 1}")
+        # create burger with current menu object's toppings dict as options
+        burger = Burger(menu.toppings)
 
-        print(center_text("MENU", burger.menu))
+        # display menu to user
+        print(menu)
 
-        burger.display_menu()
-
+        # prompt user until valid topping or done is selected
         while True :
             print("Select Topping (Please enter the name of your selection) or type 'Done': ")
             try :
@@ -272,14 +249,15 @@ for individual in range(party_count) :
                 if selected.lower() == "done" :
                     break
 
-                print("Added {burger.add_topping_to_selected(selected)}\n")
+                print(f"Added {burger.add_topping_to_selected(selected)}\n")
             
+            # print reason for invalid topping (DNE or repeated) as thrown from .add_topping_to_selected() method
             except Exception as e:
                 print(e)
         
         customer.add_burger(burger)
-    
-    party.append(customer)
 
-for individual in party :
-    print(individual.generate_receipt())
+    print(customer)
+
+if __name__ == "__main__":
+    main()
