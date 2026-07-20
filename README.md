@@ -5,6 +5,7 @@ Home for all coursework projects.
 > 📂 **[automate-the-boring-stuff](automate-the-boring-stuff)/** — *in-textbook work & examples: AtBS*<br>
 > 📂 **[class-assignments](class-assignments)/** — *for classwork unrelated to labs or textbook work*<br>
 >   - 🐍 [`pm.py`](class-assignments/pm.py) — *Practice Midterm*
+>   - 🐍 [`mt.py`](class-assignments/mt.py) — *Midterm*
 >
 > 📂 **[labs](labs)/** — *weekly lab assignments for submission*<br>
 > - 📁 [`02`](labs/02)/
