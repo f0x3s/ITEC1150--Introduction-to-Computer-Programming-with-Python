@@ -179,7 +179,7 @@ HUMAN_NUMBERS = ["first", "second", "third", "fourth", "fifth", "sixth", "sevent
 def human_number(number) :
     return HUMAN_NUMBERS[number]
 
-# menu of toppings stored as a dict with lowercase values as keys and each topping object as values
+# menu of toppings stored as a dict with normalized lowercase values as keys and each topping object as values
 # this is done because menu keys are more natively searchable than values in objects, which would require iteration
 # also lets displaymenu/receipt display use special chars like ñ without reuiring user to type them for search
 MENU = {
