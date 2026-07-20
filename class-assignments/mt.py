@@ -181,6 +181,7 @@ def human_number(number) :
 
 # menu of toppings stored as a dict with lowercase values as keys and each topping object as values
 # this is done because menu keys are more natively searchable than values in objects, which would require iteration
+# also lets displaymenu/receipt display use special chars like ñ without reuiring user to type them for search
 MENU = {
         "lettuce" : Topping("Lettuce", 50),
         "tomatoes" : Topping("Tomatoes", 50),
