@@ -190,7 +190,7 @@ MENU = {
         "bacon" : Topping("Bacon", 250),
         "grilled onions" : Topping("Grilled Onions", 200),
         "green peppers" : Topping("Green Peppers", 150),
-        "jalapenos" : Topping("Jalapenos", 180),
+        "jalapenos" : Topping("Jalapeños", 180),
         "mushrooms" : Topping("Mushrooms", 180),
 
         "mayo" : Topping("Mayo", 25),
