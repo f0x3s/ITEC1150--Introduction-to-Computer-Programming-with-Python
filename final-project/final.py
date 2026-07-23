@@ -6,22 +6,33 @@ import dicom2jpg
 
 
 def pixel_to_bool(img, x,y):
-    return True if img[x][y] else False
+    return 1 if img[x][y] else 0
 
-def main():
-    dicom_path = "ct-lung-screening-nlst-instance.dcm"
-
+def dicom_to_image (dicom_path) :
     image = dicom2jpg.dicom2img(dicom_path)
-
-    print(type(image))
-    print(image.shape)
-    print(image.dtype)
 
     success = cv2.imwrite("output.jpg", image)
 
     if not success:
         raise OSError("OpenCV could not write output.jpg")
+    
+    return image
 
+
+def main():
+    dicom_path = "ct-lung-screening-nlst-instance.dcm"
+
+    image = dicom_to_image(dicom_path)
+
+    print(type(image))
+    print(image.shape)
+    print(image.dtype)
+
+    for y in range(image.shape[1]) :
+        for x in range(image.shape[0]) :
+            print(pixel_to_bool(image, x,y), end = ", ")
+        print("\n")
+    
 
 if __name__ == "__main__":
     main()
