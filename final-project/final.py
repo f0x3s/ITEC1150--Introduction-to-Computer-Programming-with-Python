@@ -18,6 +18,14 @@ def dicom_to_image (dicom_path) :
     
     return image
 
+def thresh_image(image, value) :
+    thresh = image.copy()
+
+    for y, row in enumerate(thresh):
+        for x, pixel in enumerate(row):
+            thresh[y][x] = 255 if pixel > value else 0
+
+    return thresh
 
 def main():
     dicom_path = "ct-lung-screening-nlst-instance.dcm"
@@ -26,13 +34,12 @@ def main():
 
     print(type(image))
     print(image.shape)
-    print(image.dtype)
+    print(image.dtype) 
 
-    for y in range(image.shape[1]) :
-        for x in range(image.shape[0]) :
-            print(pixel_to_bool(image, x,y), end = ", ")
-        print("\n")
-    
+    image = thresh_image(image,127)
+
+    cv2.imshow('Image Window', image)
+    cv2.waitKey()
 
 if __name__ == "__main__":
     main()
